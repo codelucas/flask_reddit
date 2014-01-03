@@ -8,7 +8,7 @@ Jason Tanner -- http://jasontanner.herokuapp.com
 from flask import Flask, render_template
 from flask.ext.sqlalchemy import SQLAlchemy
 
-
+IS_DEBUG = True
 app = Flask(__name__)
 app.config.from_object('config')
 
@@ -26,7 +26,9 @@ app.register_blueprint(threads_module)
 
 @app.route("/")
 def hello():
-    return render_template('base.html')
+    return render_template('home.html')
 
+app.debug = IS_DEBUG
 if __name__ == "__main__":
+    print 'We are running flask via main()'
     app.run()
