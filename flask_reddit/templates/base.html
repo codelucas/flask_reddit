@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An extendable Reddit clone built with flask by 
+         Lucas Ou-Yang and Jason Tanner.">
+    <meta name="author" content="Lucas Ou-Yang, Jason Tanner">
+
+    <title>{% block title %}Flask-Reddit: By Lucas & Jason{% endblock %}</title>
+    <!-- Bootstrap core CSS -->
+    <!-- <link href="css/bootstrap.css" rel="stylesheet"> -->
+    
+    {% block css %}
+    <!-- Actually, let's just use a CDN -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    {% endblock %}
+
+    <!-- Add custom CSS here -->
+    <style>
+    body {margin-top: 60px;}
+    </style>
+
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" 
+                data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Flask-Reddit</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="">About</a></li>
+            <li><a href="">Services</a></li>
+            <li><a href="">Contact</a></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container -->
+    </nav>
+
+    <div class="container">
+      <div id="messages-wrap">
+        <div id="messages">
+          {% for category, msg in get_flashed_messages(with_categories=true) %}
+            <p class="message flash-{{ category }}">{{ msg }}</p>
+          {% endfor %}
+        </div>
+      </div>
+
+      {% block content %}
+      <div class="row">
+        <div class="col-lg-12">
+        </div>
+      </div>
+      {% endblock %}
+
+    </div><!-- /.container -->
+
+    <!-- JavaScript -->
+    <!-- <script src="js/bootstrap.js"></script>
+    <script src="js/jquery-1.10.2.js"></script> -->
+
+    {% block script %}
+    <!-- Let's use a CDN -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    {% endblock %}
+  </body>
+</html>
