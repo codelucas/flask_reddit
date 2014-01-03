@@ -15,7 +15,7 @@ class Thread(db.Model):
     body = db.Column(db.String(THREAD.MAX_BODY), default=None)
     link = db.Column(db.String(THREAD.MAX_LINK), default=None, unique=True)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users_user.id'))
 
     created_on = db.Column(db.DateTime, default=db.func.now())
     updated_on = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
@@ -26,10 +26,11 @@ class Thread(db.Model):
 
     status = db.Column(db.SmallInteger, default=THREAD.ALIVE)
 
-    def __init__(self, title, body, link, user):
-        self.username = username
-        self.email = email
-        self.password = password
+    def __init__(self, title, body, link, user_id):
+        self.title = title
+        self.body = body
+        self.link = link
+        self.user_id = user_id
 
     def __repr__(self):
         return '<Thread %r>' % (self.title)
