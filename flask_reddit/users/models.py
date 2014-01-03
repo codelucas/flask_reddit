@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 """
-from app import db
-from app.users import constants as USER
+from flask_reddit import db
+from flask_reddit.users import constants as USER
 
-class User(db.model):
+class User(db.Model):
     """
     """
     __tablename__ = 'users_user'

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 """
-from app import db
-from app.threads import constants as THREAD
+from flask_reddit import db
+from flask_reddit.threads import constants as THREAD
 
-class Thread(db.model):
+class Thread(db.Model):
     """
     We will mimic reddit, with votable threads. Each thread may have either
     a body text or a link, but not both.

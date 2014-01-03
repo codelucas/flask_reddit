@@ -8,6 +8,6 @@ import readline
 from pprint import pprint
 
 from flask import *
-from app import *
+from flask_reddit import *
 
 os.environ['PYTHONINSPECT'] = 'True'

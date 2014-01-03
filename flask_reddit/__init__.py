@@ -17,12 +17,15 @@ db = SQLAlchemy(app)
 def not_found(error):
     return render_template('404.html'), 404
 
-from app.users.views import mod as users_module
+from flask_reddit.users.views import mod as users_module
 app.register_blueprint(users_module)
+
+from flask_reddit.threads.views import mod as threads_module
+app.register_blueprint(threads_module)
 
 @app.route("/")
 def hello():
-    return render_template('base.html'
+    return render_template('base.html')
 
 if __name__ == "__main__":
     app.run()
