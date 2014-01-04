@@ -3,6 +3,7 @@
 """
 from flask_reddit import db
 from flask_reddit.users import constants as USER
+from flask_reddit.threads.models import Thread
 
 class User(db.Model):
     """
@@ -14,7 +15,7 @@ class User(db.Model):
     password = db.Column(db.String(USER.MAX_PASSW))
     created_on = db.Column(db.DateTime, default=db.func.now())
 
-    threads = db.relationship('threads_thread', backref='user', lazy='dynamic')
+    threads = db.relationship('Thread', backref='user', lazy='dynamic')
 
     # upvotes = db.Column()
     # downvotes = db.Column()

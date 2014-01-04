@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2.7
 """
 /shell.py will allow you to get a console and enter commands within your flask environment.
 """
@@ -10,7 +10,7 @@ from pprint import pprint
 from flask import *
 from flask_reddit import *
 
-from flask_reddit.users import models
-from flask_reddit.threads import models
+from flask_reddit.users.models import *
+from flask_reddit.threads.models import *
 
 os.environ['PYTHONINSPECT'] = 'True'

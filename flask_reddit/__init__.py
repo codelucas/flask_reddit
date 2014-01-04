@@ -24,9 +24,18 @@ app.register_blueprint(users_module)
 from flask_reddit.threads.views import mod as threads_module
 app.register_blueprint(threads_module)
 
+from flask_reddit.constants import STATIC_ROOT, STATIC_URL, DOMAIN, ROOT_URL
+
 @app.route("/")
 def hello():
     return render_template('home.html')
+
+def custom_render(template, *args, **kwargs):
+    """
+    custom template rendering including some flask_reddit vars
+    """
+    return render_template(template, *args, **kwargs)
+
 
 app.debug = IS_DEBUG
 if __name__ == "__main__":
