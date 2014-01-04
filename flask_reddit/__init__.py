@@ -5,11 +5,10 @@ Written by:
 Lucas Ou-Yang -- http://codelucas.com
 Jason Tanner -- http://jasontanner.herokuapp.com
 """
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
 
-IS_DEBUG = True
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static/flask_reddit')
 app.config.from_object('config')
 
 db = SQLAlchemy(app)
@@ -24,9 +23,7 @@ app.register_blueprint(users_module)
 from flask_reddit.threads.views import mod as threads_module
 app.register_blueprint(threads_module)
 
-from flask_reddit.constants import STATIC_ROOT, STATIC_URL, DOMAIN, ROOT_URL
-
-@app.route("/")
+@app.route('/')
 def hello():
     return render_template('home.html')
 
@@ -36,8 +33,8 @@ def custom_render(template, *args, **kwargs):
     """
     return render_template(template, *args, **kwargs)
 
+app.debug = app.config['DEBUG']
 
-app.debug = IS_DEBUG
-if __name__ == "__main__":
+if __name__ == '__main__':
     print 'We are running flask via main()'
     app.run()

@@ -7,7 +7,7 @@
          Lucas Ou-Yang and Jason Tanner.">
     <meta name="author" content="Lucas Ou-Yang, Jason Tanner">
 
-    <title>{% block title %}Flask-Reddit: By Lucas & Jason{% endblock %}</title>
+    <title>{% block title %}{{ config.BRAND }}: By Lucas & Jason{% endblock %}</title>
     <!-- Bootstrap core CSS -->
     <!-- <link href="css/bootstrap.css" rel="stylesheet"> -->
 
@@ -15,7 +15,7 @@
     {% block css %}
     <!-- Actually, let's just use a CDN -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="http://reddit.codelucas.com/static/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {% endblock %}
 
     <!-- Add custom CSS here -->
@@ -36,7 +36,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">Flask-Reddit</a>
+          <a class="navbar-brand" href="/">{{ config.BRAND }}</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
