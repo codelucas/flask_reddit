@@ -3,4 +3,12 @@
 # cd /home/lucas/www/reddit.codelucas.com/reddit-env;
 # source bin/activate;
 
-/home/lucas/www/reddit.codelucas.com/reddit-env/bin/gunicorn -c /home/lucas/www/reddit.codelucas.com/reddit-env/flask_reddit/server/gunicorn_config.py flask_reddit.wsgi;
+# the following exec is very important for gunicorn!
+# without it supervisord won't work because the "exec" 
+# has the effect of keeping gunicorn in the same process ID, 
+# rather than forking off a new one, and then doing exec.
+
+# Normally, when you type "gunicorn" in your shell, the 
+# shell first creates a new process with fork, and 
+# then in the new process, runs exec.
+exec /home/lucas/www/reddit.codelucas.com/reddit-env/bin/gunicorn -c /home/lucas/www/reddit.codelucas.com/reddit-env/flask_reddit/server/gunicorn_config.py flask_reddit.wsgi;
