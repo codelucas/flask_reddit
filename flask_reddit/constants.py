@@ -3,11 +3,11 @@
 """
 """
 
-DOMAIN = "reddit.codelucas.com"
-ROOT_URL = "http://reddit.codelucas.com"
+DOMAIN = "reddit.moopsup.com"
+ROOT_URL = "http://reddit.moopsup.com"
 
-STATIC_ROOT = "/home/louyang/webapps/flask_reddit/flask_reddit/static/"
-STATIC_URL = "/static/flask_reddit/"
+STATIC_ROOT = "/home/lucas/www/reddit.codelucas.com/reddit-codelucas/flask_reddit/flask_reddit/static/"
+STATIC_URL = "/static/"
 
 
 

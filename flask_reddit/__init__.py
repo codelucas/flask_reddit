@@ -3,12 +3,11 @@
 """
 Written by:
 Lucas Ou-Yang -- http://codelucas.com
-Jason Tanner -- http://jasontanner.herokuapp.com
 """
 from flask import Flask, render_template, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
 
-app = Flask(__name__, static_url_path='/static/flask_reddit')
+app = Flask(__name__, static_url_path='/static')
 app.config.from_object('config')
 
 db = SQLAlchemy(app)
