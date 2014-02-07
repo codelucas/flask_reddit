@@ -1,16 +1,28 @@
 {% extends "base.html" %}
 
 {% block content %}
-  HI {{ user.username }}!
-
-  {% for thread in threads %}
-    <div class="row">
-      <a href="{{ thread.link }}">{{ thread.title }}</a>
-      <br>
-      {{ thread.created_on }}
-      <br>
-      {{ length(thread.comments) }}
-    </div>
-
-  {% endfor %}
+  <div class="col-lg-9">
+      <p> this is on the left</p>
+      {% for thread in threads %}
+        <div class="row">
+          <a href="{{ thread.link }}">{{ thread.title }}</a>
+          <br>
+          {{ thread.created_on }}
+          <br>
+          {{ length(thread.comments) }}
+        </div>
+      {% endfor %}
+  </div>
+  <div class="col-lg-3">
+    {% if user is defined and user != None %}
+        <a href=""><button class="btn btn-primary">Submit a post</button></a>
+    {% endif %}
+    <br>
+    <hr>
+    <h3>List of subreddits</h3>
+    <ul>
+        <li></li>
+        <li></li>
+    </ul>
+  </div>
 {% endblock %}

@@ -3,10 +3,14 @@
  *  fairly organized!
  */
 
-.label {
-    color: #000;
+.main-box {
+    margin-top: 20px;
+    min-height: 700px;
 }
 
+.the-404-image {
+    margin: 20px 0 80px 0;
+}
 
 /*
  * Google style login form
