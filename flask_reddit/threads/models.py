@@ -4,7 +4,6 @@
 from flask_reddit import db
 from flask_reddit.threads import constants as THREAD
 
-
 thread_upvotes = db.Table('thread_upvotes',
     db.Column('user_id', db.Integer, db.ForeignKey('users_user.id')),
     db.Column('thread_id', db.Integer, db.ForeignKey('threads_thread.id'))

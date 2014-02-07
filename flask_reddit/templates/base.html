@@ -44,7 +44,7 @@
               <li><a href="{{ config.ROOT_URL }}/trending">Trending</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-          {% if user == None %}
+          {% if user is not defined or user == None %}
               <li><a href="{{ config.ROOT_URL }}/register">Register</a></li>
               <li><a href="{{ config.ROOT_URL }}/login">Login</a></li>
           {% else %}
