@@ -22,9 +22,9 @@ app.register_blueprint(users_module)
 from flask_reddit.threads.views import mod as threads_module
 app.register_blueprint(threads_module)
 
-@app.route('/')
-def hello():
-    return render_template('home.html')
+from flask_reddit.frontend.views import mod as frontend_module
+app.register_blueprint(frontend_module)
+
 
 def custom_render(template, *args, **kwargs):
     """

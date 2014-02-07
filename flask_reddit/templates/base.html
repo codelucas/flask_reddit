@@ -13,8 +13,7 @@
 
     <link rel="icon" href="http://reddit.codelucas.com/static/imgs/favicon.ico" type="image/x-icon">
     {% block css %}
-    <!-- Actually, let's just use a CDN -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {% endblock %}
 
@@ -42,9 +41,15 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="">About</a></li>
-            <li><a href="">Services</a></li>
-            <li><a href="">Contact</a></li>
+              <li><a href="{{ config.ROOT_URL }}/trending">Trending</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+          {% if user == None %}
+              <li><a href="{{ config.ROOT_URL }}/register">Register</a></li>
+              <li><a href="{{ config.ROOT_URL }}/login">Login</a></li>
+          {% else %}
+              <li><a href="{{ config.ROOT_URL }}/logout">Logout</a></li>
+          {% endif %}
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container -->
@@ -54,7 +59,8 @@
       <div id="messages-wrap">
         <div id="messages">
           {% for category, msg in get_flashed_messages(with_categories=true) %}
-            <p class="message flash-{{ category }}">{{ msg }}</p>
+          <div class="flash-{{ category }} alert alert-dismissable alert-danger">
+              {{ msg }}</p>
           {% endfor %}
         </div>
       </div>

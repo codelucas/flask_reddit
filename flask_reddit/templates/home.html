@@ -1,8 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row">
-    <a href="users/register"><button type="button" class="btn btn-info">Register</button></a>
-    <a href="users/login"><button type="button" class="btn btn-primary">Login</button></a>
-</div>
+  HI {{ user.username }}!
+
+  {% for thread in threads %}
+    <div class="row">
+      <a href="{{ thread.link }}">{{ thread.title }}</a>
+      <br>
+      {{ thread.created_on }}
+      <br>
+      {{ length(thread.comments) }}
+    </div>
+
+  {% endfor %}
 {% endblock %}

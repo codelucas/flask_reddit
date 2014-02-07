@@ -1,18 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
+  <div class="row">
+  <div class="col-lg-6" style="float: none; margin: 20px auto;">
+  <div class="well">
   {% from "forms/macros.html" import render_field %}
-  <form method="POST" action="." class="form">
+  <form method="POST" action="." class="form bs-example form-horizontal">
     {{ form.csrf_token }}
-    {{ render_field(form.username, class="input text") }}
-    {{ render_field(form.email, class="input text") }}
-    {{ render_field(form.password, class="input text") }}
-    {{ render_field(form.confirm, class="input text") }}
-    {{ render_field(form.accept_tos, class="input checkbox") }}
+    {{ render_field(form.username, class="form-control", placeholder="username") }}
+    <br>
+    {{ render_field(form.email, class="form-control", placeholder="email") }}
+    <br>
+    {{ render_field(form.password, class="form-control", placeholder="password") }}
+    <br>
+    {{ render_field(form.confirm, class="form-control", placeholder="confirm password") }}
+    <br>
+    Check to agree to <a href="">terms of services</a> 
+        {{ render_field(form.accept_tos, class="form-control") }}
     <label>ReCaptcha</label>
     {{ form.recaptcha }}
-    <input type="submit" value="Register" class="button green">
+    <button type="submit" value="Register" class="btn btn-primary">Register</button>
   </form>
-  <a href="{{ url_for('users.login') }}">Login</a>
-
+  </div>
+  </div>
+  </div>
 {% endblock %}

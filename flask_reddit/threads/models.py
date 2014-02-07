@@ -101,7 +101,8 @@ class Comment(db.Model):
     thread_id = db.Column(db.Integer, db.ForeignKey('threads_thread.id'))
 
     parent_id = db.Column(db.Integer, db.ForeignKey('threads_comment.id'))
-    children = db.relationship('Comment', backref='parent', lazy='dynamic')
+    children = db.relationship('Comment', backref=db.backref('parent',
+            remote_side=[id]), lazy='dynamic')
     depth = db.Column(db.Integer, default=1) # start at depth 1
 
     created_on = db.Column(db.DateTime, default=db.func.now())
