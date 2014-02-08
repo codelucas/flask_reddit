@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 """
-from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for
+from flask import (Blueprint, request, render_template, flash, g, session,
+    redirect, url_for, abort)
 
 from flask_reddit import db
 from flask_reddit.users.models import User
@@ -15,8 +16,13 @@ def before_request():
     if 'user_id' in session:
         g.user = User.query.get(session['user_id'])
 
-@mod.route('/me/')
+@mod.route('/<username>/')
 @requires_login
-def home_page():
-    return render_template('users/profile.html', user=g.user)
+def home_page(username=None):
+    if not username:
+        abort(404)
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        abort(404)
+    return render_template('users/profile.html', user=g.user, current_user=user)
 

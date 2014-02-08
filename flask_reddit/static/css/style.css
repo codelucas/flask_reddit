@@ -12,6 +12,15 @@
     margin: 20px 0 80px 0;
 }
 
+.post-listing-meta {
+    font-size: 13px;
+}
+
+.listing-title:hover {
+    color: #000;
+    text-decoration: underline;
+}
+
 /*
  * Google style login form
  */

@@ -3,6 +3,8 @@
 """
 from flask_reddit import db
 from flask_reddit.threads import constants as THREAD
+from flask_reddit import utils
+import datetime
 
 thread_upvotes = db.Table('thread_upvotes',
     db.Column('user_id', db.Integer, db.ForeignKey('users_user.id')),
@@ -32,8 +34,9 @@ class Thread(db.Model):
     __tablename__ = 'threads_thread'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(THREAD.MAX_TITLE))
-    body = db.Column(db.String(THREAD.MAX_BODY), default=None)
+    text = db.Column(db.String(THREAD.MAX_BODY), default=None)
     link = db.Column(db.String(THREAD.MAX_LINK), default=None, unique=True)
+    thumbnail = db.Column(db.String(THREAD.MAX_LINK), default=None)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users_user.id'))
 
@@ -46,9 +49,9 @@ class Thread(db.Model):
 
     status = db.Column(db.SmallInteger, default=THREAD.ALIVE)
 
-    def __init__(self, title, body, link, user_id):
+    def __init__(self, title, text, link, user_id):
         self.title = title
-        self.body = body
+        self.text = text
         self.link = link
         self.user_id = user_id
 
@@ -65,18 +68,34 @@ class Thread(db.Model):
         """
         returns the raw age of this thread in seconds
         """
-        pass
+        return (self.created_on - datetime.datetime(1970,1,1)).total_seconds()
 
-    def get_human_age(self):
+    def pretty_date(self):
         """
         returns a humanized version of the raw age of this thread,
         eg: 34 minutes ago versus 2040 seconds ago.
         """
-        pass
+        return utils.pretty_date(self.created_on)
 
     def comment_on(self):
         """
         when someone comments on this particular thread
+        """
+        pass
+
+    def vote(self, direction):
+        """
+        if direction == 'up':
+            ins = thread_upvotes.insert(user_id=user.id, thread_id=self.id)
+        elif direction == 'down':
+            ins = thread_downvotes.insert(user_id=user.id, thread_id=self.id)
+        db.engine.execute(ins)
+        """
+        pass
+
+    def extract_thumbnail(self):
+        """
+        use reddit algorithm to extract thumbnail from link, grayscale it
         """
         pass
 
@@ -94,7 +113,7 @@ class Comment(db.Model):
     """
     __tablename__ = 'threads_comment'
     id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(THREAD.MAX_BODY), default=None)
+    text = db.Column(db.String(THREAD.MAX_BODY), default=None)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users_user.id'))
     thread_id = db.Column(db.Integer, db.ForeignKey('threads_thread.id'))
@@ -111,16 +130,21 @@ class Comment(db.Model):
     # downvotes = db.Column(db.Integer)
 
     def __repr__(self):
-        return '<Comment %r>' % (self.body[:25])
+        return '<Comment %r>' % (self.text[:25])
 
-    def __init__(self, thread_id, comment_id, user_id, body):
+    def __init__(self, thread_id, comment_id, user_id, text):
         self.thread_id = thread_id
         self.user_id = user_id
-        self.body = body
+        self.text = text
 
     def get_age(self):
         """
         returns the raw age of this comment in seconds
+        """
+        pass
+
+    def vote(self, direction):
+        """
         """
         pass
 

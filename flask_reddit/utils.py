@@ -12,36 +12,6 @@ INSTANCE_FOLDER_PATH = os.path.join('/tmp', 'instance')
 
 ALLOWED_AVATAR_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
-# Form validation
-
-USERNAME_LEN_MIN = 4
-USERNAME_LEN_MAX = 25
-
-REALNAME_LEN_MIN = 4
-REALNAME_LEN_MAX = 25
-
-PASSWORD_LEN_MIN = 6
-PASSWORD_LEN_MAX = 16
-
-AGE_MIN = 1
-AGE_MAX = 300
-
-DEPOSIT_MIN = 0.00
-DEPOSIT_MAX = 9999999999.99
-
-# Sex type.
-MALE = 1
-FEMALE = 2
-OTHER = 9
-SEX_TYPE = {
-    MALE: u'Male',
-    FEMALE: u'Female',
-    OTHER: u'Other',
-}
-
-# Model
-STRING_LEN = 64
-
 def get_current_time():
     return datetime.utcnow()
 
@@ -51,7 +21,6 @@ def pretty_date(dt, default=None):
     3 days ago, 5 hours ago etc.
     Ref: https://bitbucket.org/danjac/newsmeme/src/a281babb9ca3/newsmeme/
     """
-
     if default is None:
         default = 'just now'
 

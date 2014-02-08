@@ -1,0 +1,20 @@
+{% extends "home.html" %}
+
+{% block left %}
+  <div class="row">
+  <h2>Posts are vital, thank you for submitting!</h2>
+  <div class="well">
+  {% from "forms/macros.html" import render_field %}
+  <form method="POST" action="." class="form bs-example form-horizontal">
+    {{ form.csrf_token }}
+    {{ render_field(form.title, class="form-control", placeholder="title", autofocus="") }}
+    <br>
+    {{ render_field(form.link, class="form-control", placeholder="link") }}
+    <br>
+    {{ render_field(form.text, class="form-control", placeholder="body text", style="height: 150px;") }}
+    <br>
+    <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
+  </form>
+  </div>
+  </div> 
+{% endblock %}
