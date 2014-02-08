@@ -2,8 +2,9 @@
 
 {% block left %}
   <div class="row">
-  <h2>Posts are vital, thank you for submitting!</h2>
-  <div class="well">
+  <h2 class="thread-submit-title">Posts are vital, thank you for submitting!</h2>
+  <br>
+  <div class="well col-lg-10">
   {% from "forms/macros.html" import render_field %}
   <form method="POST" action="." class="form bs-example form-horizontal">
     {{ form.csrf_token }}

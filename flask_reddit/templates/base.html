@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
     <meta name="description" content="An extendable Reddit clone built with flask by 
          Lucas Ou-Yang and Jason Tanner.">
     <meta name="author" content="Lucas Ou-Yang, Jason Tanner">
@@ -19,7 +19,7 @@
 
     <!-- Add custom CSS here -->
     <style>
-    body {margin-top: 60px;}
+        body {margin-top: 60px;}
     </style>
 
   </head>
@@ -48,7 +48,11 @@
               <li><a href="{{ config.ROOT_URL }}/register">Register</a></li>
               <li><a href="{{ config.ROOT_URL }}/login">Login</a></li>
           {% else %}
-              <li><a href="{{ config.ROOT_URL }}/logout">Logout</a></li>
+              <p class="navbar-text login-nav-text">Logged in as 
+                  <a href="{{ url_for('users.home_page', username=user.username) }}">
+                      {{ user.username }}</a>
+              </p>
+              <li class="logout-button"><a href="{{ config.ROOT_URL }}/logout">Logout</a></li>
           {% endif %}
           </ul>
         </div><!-- /.navbar-collapse -->

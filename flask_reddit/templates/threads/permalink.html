@@ -2,16 +2,33 @@
 
 {% block left %}
 <div class="row">
-    <div class="row">
-        <a href="{{ thread.link }}"><h2 class="listing-title">{{ thread.title }}</h2></a>
-        Last updated: {{ thread.pretty_date('updated') }}, created on {{ thread.pretty_date('created') }}.
-        By <a href="{{ url_for('users.home_page', username=thread.user.username) }}">
-            {{ thread.user.username }}.</a>
-        <p>{{ thread.text }}</p>
-    </div>
+    <a href="{{ thread.link }}"><h2 class="listing-title">{{ thread.title }}</h2></a>
+    updated {{ thread.pretty_date('updated') }} | created {{ thread.pretty_date('created') }} |
+    By <a href="{{ url_for('users.home_page', username=thread.user.username) }}">
+        {{ thread.user.username }}.</a>
+    <hr>
+    <p>{{ thread.text }}</p>
 </div>
 
 <div class="row">
+    <div class="col-lg-6 thread-comment-section">
+        {% if user is defined and user != None %}
+        <h5>Submit a comment:</h5>
+        <form method="POST" action="." class="form bs-example form-horizontal">
+            <textarea class="form-control thread-comment-box" id="text" 
+                name="comment" placeholder=""></textarea>       
+            <a href=""><button class="btn btn-sm btn-primary">Submit</button></a>
+        </form>
+        {% else %}
+        <a href="{{ url_for('frontends.login') }}">Login</a> or 
+        <a href="{{ url_for('frontends.register') }}">register</a> to comment!
+        {% endif %}
+    </div>
+</div>
+<br>
+<div class="row">
+    <h4>Comments section</h4>
+    <hr>
     {% for comment in thread.comments.all() %}
         
     {% endfor %}

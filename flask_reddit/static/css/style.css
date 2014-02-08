@@ -16,10 +16,48 @@
     font-size: 13px;
 }
 
+.thread-submit-title {
+    margin-top: 0px;
+}
+
+.listing-title {
+    margin-top: 0px;
+}
+
 .listing-title:hover {
     color: #000;
     text-decoration: underline;
 }
+
+.navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus {
+    color: #ffffff;
+    background-color: #eb6864;
+}
+
+.thread-comment-section {
+    padding-left: 0px;
+}
+
+.thread-comment-box {
+    height: 70px;
+    margin-bottom: 10px;
+}
+
+.logout-button {
+    font-size:13px;
+}
+
+.login-nav-text {
+    font-size: 13px;
+    margin-top: 22px;
+    color: #fff;
+}
+
+.login-nav-text a {
+    color: #fff; 
+    text-decoration: underline;
+}
+
 
 /*
  * Google style login form
