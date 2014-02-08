@@ -5,7 +5,11 @@
   {% block left %}
       {% for thread in threads %}
         <div class="row">
+          {% if thread.link %}
           <a href="{{ thread.link }}" class="listing-title">
+          {% else %}
+          <a href="{{ config.ROOT_URL }}/threads/{{ thread.id }}/{{ thread.title|truncate(100)|replace(' ',       '_') }}" class="listing-title">
+          {% endif %}
             <h4>{{ thread.title }}</h4>
           </a>
 

@@ -19,6 +19,23 @@ def before_request():
     if 'user_id' in session:
         g.user = User.query.get(session['user_id'])
 
+def meets_thread_criterea(thread):
+    """
+    """
+    if not thread.title:
+        flash('You must include a title!')
+        return False
+    if not thread.text and not thread.link:
+        flash('You must post either body text or a link!')
+        return False
+
+    dup_link = Thread.query.filter_by(link=thread.link).first()
+    if not thread.text and dup_link:
+        flash('someone has already posted the same link as you!')
+        return False
+
+    return True
+
 @mod.route('/submit/', methods=['GET', 'POST'])
 def submit():
     """
@@ -30,8 +47,14 @@ def submit():
 
     form = SubmitForm(request.form)
     if form.validate_on_submit():
-        thread = Thread(title=form.title.data, link=form.link.data,
-                text=form.text.data, user_id=user_id)
+        title = form.title.data.strip()
+        link = form.link.data.strip()
+        text = form.text.data.strip()
+        thread = Thread(title=title, link=link, text=text, user_id=user_id)
+
+        if not meets_thread_criterea(thread):
+            return render_template('threads/submit.html', form=form, user=g.user)
+
         db.session.add(thread)
         db.session.commit()
 

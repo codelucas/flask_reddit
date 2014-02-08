@@ -6,11 +6,19 @@ Lucas Ou-Yang -- http://codelucas.com
 """
 from flask import Flask, render_template, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
+from werkzeug.routing import BaseConverter
 
 app = Flask(__name__, static_url_path='/static')
 app.config.from_object('config')
 
 db = SQLAlchemy(app)
+
+class RegexConverter(BaseConverter):
+    def __init__(self, url_map, *items):
+        super(RegexConverter, self).__init__(url_map)
+        self.regex = items[0]
+
+app.url_map.converters['regex'] = RegexConverter
 
 @app.errorhandler(404)
 def not_found(error):

@@ -15,39 +15,49 @@ ALLOWED_AVATAR_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 def get_current_time():
     return datetime.utcnow()
 
-def pretty_date(dt, default=None):
+def pretty_date(time=False):
     """
-    Returns string representing "time since" e.g.
-    3 days ago, 5 hours ago etc.
-    Ref: https://bitbucket.org/danjac/newsmeme/src/a281babb9ca3/newsmeme/
+    Get a datetime object or a int() Epoch timestamp and return a
+    pretty string like 'an hour ago', 'Yesterday', '3 months ago',
+    'just now', etc
     """
-    if default is None:
-        default = 'just now'
+    now = datetime.now()
+    if type(time) is int:
+        diff = now - datetime.fromtimestamp(time)
+    elif isinstance(time, datetime):
+        diff = now - time
+    elif not time:
+        diff = now - now
+    second_diff = diff.seconds
+    day_diff = diff.days
 
-    now = datetime.utcnow()
-    diff = now - dt
+    if day_diff < 0:
+        return ''
 
-    periods = (
-        (diff.days / 365, 'year', 'years'),
-        (diff.days / 30, 'month', 'months'),
-        (diff.days / 7, 'week', 'weeks'),
-        (diff.days, 'day', 'days'),
-        (diff.seconds / 3600, 'hour', 'hours'),
-        (diff.seconds / 60, 'minute', 'minutes'),
-        (diff.seconds, 'second', 'seconds'),
-    )
+    if day_diff == 0:
+        if second_diff < 10:
+            return "just now"
+        if second_diff < 60:
+            return str(second_diff) + " seconds ago"
+        if second_diff < 120:
+            return  "a minute ago"
+        if second_diff < 3600:
+            return str( second_diff / 60 ) + " minutes ago"
+        if second_diff < 7200:
+            return "an hour ago"
+        if second_diff < 86400:
+            return str( second_diff / 3600 ) + " hours ago"
 
-    for period, singular, plural in periods:
+    if day_diff == 1:
+        return "Yesterday"
+    if day_diff < 7:
+        return str(day_diff) + " days ago"
+    if day_diff < 31:
+        return str(day_diff/7) + " weeks ago"
+    if day_diff < 365:
+        return str(day_diff/30) + " months ago"
 
-        if not period:
-            continue
-
-        if period == 1:
-            return u'%d %s ago' % (period, singular)
-        else:
-            return u'%d %s ago' % (period, plural)
-
-    return default
+    return str(day_diff/365) + " years ago"
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_AVATAR_EXTENSIONS

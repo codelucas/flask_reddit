@@ -35,7 +35,7 @@ class Thread(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(THREAD.MAX_TITLE))
     text = db.Column(db.String(THREAD.MAX_BODY), default=None)
-    link = db.Column(db.String(THREAD.MAX_LINK), default=None, unique=True)
+    link = db.Column(db.String(THREAD.MAX_LINK), default=None)
     thumbnail = db.Column(db.String(THREAD.MAX_LINK), default=None)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users_user.id'))

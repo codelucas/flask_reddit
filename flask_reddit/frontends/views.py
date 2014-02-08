@@ -13,8 +13,15 @@ from flask_reddit.users.decorators import requires_login
 mod = Blueprint('frontends', __name__, url_prefix='')
 
 @mod.route('/')
-def home():
-    threads = Thread.query.all()
+@mod.route('/<regex("trending"):trending>/')
+def home(trending=False):
+    """
+    If not trending we order by creation date
+    """
+    if trending:
+        threads = Thread.query.all() # TODO
+    else:
+        threads = Thread.query.order_by(db.desc(Thread.created_on)).all()
     return render_template('home.html', user=g.user, threads=threads)
 
 @mod.before_request
