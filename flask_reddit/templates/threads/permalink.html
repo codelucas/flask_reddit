@@ -1,0 +1,20 @@
+{% extends "home.html" %}
+
+{% block left %}
+<div class="row">
+    <div class="row">
+        <a href="{{ thread.link }}"><h2 class="listing-title">{{ thread.title }}</h2></a>
+        Last updated: {{ thread.pretty_date('updated') }}, created on {{ thread.pretty_date('created') }}.
+        By <a href="{{ url_for('users.home_page', username=thread.user.username) }}">
+            {{ thread.user.username }}.</a>
+        <p>{{ thread.text }}</p>
+    </div>
+</div>
+
+<div class="row">
+    {% for comment in thread.comments.all() %}
+        
+    {% endfor %}
+</div>
+
+{% endblock %}

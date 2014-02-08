@@ -70,12 +70,15 @@ class Thread(db.Model):
         """
         return (self.created_on - datetime.datetime(1970,1,1)).total_seconds()
 
-    def pretty_date(self):
+    def pretty_date(self, typeof='created'):
         """
         returns a humanized version of the raw age of this thread,
         eg: 34 minutes ago versus 2040 seconds ago.
         """
-        return utils.pretty_date(self.created_on)
+        if typeof == 'created':
+            return utils.pretty_date(self.created_on)
+        elif typeof == 'updated':
+            return utils.pretty_date(self.updated_on)
 
     def comment_on(self):
         """

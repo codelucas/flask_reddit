@@ -51,11 +51,13 @@ def edit():
     """
     pass
 
-@mod.route('/<thread_id>/<thread_title>/', methods=['GET', 'POST'])
-def thread_permalink():
+@mod.route('/<thread_id>/<path:title>/', methods=['GET', 'POST'])
+def thread_permalink(thread_id=None, title=None):
     """
     """
-    pass
+    thread_id = thread_id or -99
+    thread = Thread.query.get_or_404(int(thread_id))
+    return render_template('threads/permalink.html', user=g.user, thread=thread)
 
 ##########################
 ##### Comments Views #####
