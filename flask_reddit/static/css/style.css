@@ -3,6 +3,10 @@
  *  fairly organized!
  */
 
+.well {
+    background-color: #fff;
+}
+
 .main-box {
     margin-top: 20px;
     min-height: 700px;
@@ -14,6 +18,14 @@
 
 .post-listing-meta {
     font-size: 13px;
+}
+
+.user-profile-box {
+    padding-left: 0px;
+}
+
+.thread-submit-box {
+    padding-left: 0px;
 }
 
 .thread-submit-title {
@@ -29,9 +41,14 @@
     text-decoration: underline;
 }
 
-.navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus {
-    color: #ffffff;
-    background-color: #eb6864;
+.navbar-default .navbar-brand:hover, .navbar-inverse .navbar-brand:focus {
+    color: #eb6864;
+    background-color: #fff;
+}
+
+.navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>li>a:focus {
+    color: #eb6864;
+    background-color: #fff;
 }
 
 .thread-comment-section {
@@ -54,10 +71,23 @@
 }
 
 .login-nav-text a {
-    color: #fff; 
+    color: #000; 
     text-decoration: underline;
 }
 
+.login-nav-text a:hover {
+    color: #eb6864; 
+    text-decoration: underline;
+}
+
+.listing-row {
+
+}
+
+.listing-row a {
+    color: #000;
+    /* text-decoration: underline; */
+}
 
 /*
  * Google style login form

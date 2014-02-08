@@ -4,7 +4,7 @@
   <div class="row">
   <h2 class="thread-submit-title">Posts are vital, thank you for submitting!</h2>
   <br>
-  <div class="well col-lg-10">
+  <div class="col-lg-10 thread-submit-box">
   {% from "forms/macros.html" import render_field %}
   <form method="POST" action="." class="form bs-example form-horizontal">
     {{ form.csrf_token }}
