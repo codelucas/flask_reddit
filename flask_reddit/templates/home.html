@@ -5,23 +5,28 @@
   {% block left %}
       {% for thread in threads %}
         <div class="row listing-row">
-          {% if thread.link %}
-          <a href="{{ thread.link }}" class="listing-title">
-          {% else %}
-          <a href="{{ config.ROOT_URL }}/threads/{{ thread.id }}/{{ thread.title|truncate(100)|replace(' ',       '_') }}" class="listing-title">
-          {% endif %}
-            <h4>{{ thread.title }}</h4>
-          </a>
-
-          <div class="post-listing-meta">
-        <a href="{{ config.ROOT_URL }}/threads/{{ thread.id }}/{{ thread.title|truncate(100)|replace(' ', '_') }}">
-
-         {{ thread.comments.all()|length() }} comments</a>,
-         {{ thread.pretty_date() }}, by <a href="{{ url_for('users.home_page', 
-                username=thread.user.username) }}">
-              {{ thread.user.username }}</a>
+          <div class="col-lg-1 listing-vote-box">  
+              <a href="{{ config.ROOT_URL }}/api/upvote/{{ thread.id }}" 
+                  class="listing-vote-box">▲</a>
           </div>
-          </a>
+          <div class="col-lg-9 listing-text">  
+              {% if thread.link %}
+              <a href="{{ thread.link }}" class="listing-title">
+              {% else %}
+              <a href="{{ config.ROOT_URL }}/threads/{{ thread.id }}/{{ thread.title|truncate(100)|replace(' ',       '_') }}" class="listing-title">
+              {% endif %}
+                <h4>{{ thread.title }}</h4>
+              </a>
+
+              <div class="post-listing-meta">
+                  <a href="{{ config.ROOT_URL }}/threads/{{ thread.id }}/{{ thread.title|truncate(100)|replace(' ', '_') }}">
+                  {{ thread.comments.all()|length() }} comments</a>,
+                  {{ thread.pretty_date() }}, by 
+                  <a href="{{ url_for('users.home_page', 
+                        username=thread.user.username) }}">
+                  {{ thread.user.username }}</a>
+              </div>
+          </div>
         </div>
       {% endfor %}
   {% endblock %}

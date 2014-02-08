@@ -11,20 +11,20 @@ thread_upvotes = db.Table('thread_upvotes',
     db.Column('thread_id', db.Integer, db.ForeignKey('threads_thread.id'))
 )
 
-thread_downvotes = db.Table('thread_downvotes',
-    db.Column('user_id', db.Integer, db.ForeignKey('users_user.id')),
-    db.Column('thread_id', db.Integer, db.ForeignKey('threads_thread.id'))
-)
+# thread_downvotes = db.Table('thread_downvotes',
+#     db.Column('user_id', db.Integer, db.ForeignKey('users_user.id')),
+#     db.Column('thread_id', db.Integer, db.ForeignKey('threads_thread.id'))
+# )
 
 comment_upvotes = db.Table('comment_upvotes',
     db.Column('user_id', db.Integer, db.ForeignKey('users_user.id')),
     db.Column('comment_id', db.Integer, db.ForeignKey('threads_comment.id'))
 )
 
-comment_downvotes = db.Table('comment_downvotes',
-    db.Column('user_id', db.Integer, db.ForeignKey('users_user.id')),
-    db.Column('comment_id', db.Integer, db.ForeignKey('threads_comment.id'))
-)
+# comment_downvotes = db.Table('comment_downvotes',
+#     db.Column('user_id', db.Integer, db.ForeignKey('users_user.id')),
+#     db.Column('comment_id', db.Integer, db.ForeignKey('threads_comment.id'))
+# )
 
 class Thread(db.Model):
     """

@@ -3,7 +3,6 @@
 {% block content %}
   <div class="row">
   <div class="col-lg-6" style="float: none; margin: 20px auto;">
-  <div class="well">
   {% from "forms/macros.html" import render_field %}
   <form method="POST" action="." class="form bs-example form-horizontal">
     {{ form.csrf_token }}
@@ -19,9 +18,9 @@
         {{ render_field(form.accept_tos, class="form-control") }}
     <label>ReCaptcha</label>
     {{ form.recaptcha }}
+    <br>
     <button type="submit" value="Register" class="btn btn-primary">Register</button>
   </form>
-  </div>
   </div>
   </div>
 {% endblock %}
