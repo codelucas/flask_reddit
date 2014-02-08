@@ -17,7 +17,6 @@ def before_request():
         g.user = User.query.get(session['user_id'])
 
 @mod.route('/<username>/')
-@requires_login
 def home_page(username=None):
     if not username:
         abort(404)
