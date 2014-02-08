@@ -28,8 +28,9 @@
     {% if user is defined and user != None %}
         <a href="{{ config.ROOT_URL }}/threads/submit"><button class="btn btn-primary">
                 Submit a post</button></a>
+    {% else %}
+        <h4>Please register or login to post!</h4>
     {% endif %}
-    <br>
     <hr>
     <h3>List of subreddits</h3>
     <ul>
