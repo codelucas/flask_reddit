@@ -65,7 +65,7 @@
 <script type="text/javascript">
 window.onload = (function() {
     $(document).ready(function() {
-        $('button.submit-comment').click(function() {
+        $(document).on('click', 'button.submit-comment', function() {
             // We will submit user id data via session.
             // Don't need to include parent comment because we are commenting 
             // on a thread, not a comment!
@@ -110,7 +110,11 @@ window.onload = (function() {
                             '{{ user.username }}</a>' + 
                             ' ' + response.date + 
                             ' <a href="javascript:void(0)" class="comment-reply">reply</a>' +
-                            '</div>'
+                            '</div>' +
+                            '<textarea class="nested-comment-text-box form-control"></textarea>' +
+                            '<button class="btn btn-sm btn-primary submit-comment ' + 
+                            'nested-submit-comment-button">Submit</button>';
+ 
                         if (not_nested == 'true') {
                             $('div.comments-tree').prepend(write_string);
                         } else {
@@ -123,7 +127,7 @@ window.onload = (function() {
             {% endif %}
         });
 
-        $('a.comment-reply').on('click', function() {
+        $(document).on('click', 'a.comment-reply', function(e) {
             $(this).parent().parent().children('textarea.nested-comment-text-box').toggle();
             $(this).parent().parent().children('button.nested-submit-comment-button').toggle();
         });
