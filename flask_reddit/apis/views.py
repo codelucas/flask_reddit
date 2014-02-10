@@ -32,9 +32,11 @@ def submit_comment():
                 text=comment_text, parent_id=parent_id)
     else:
         comment = Comment(thread_id=thread_id, user_id=g.user.id, text=comment_text)
+
     db.session.add(comment)
     db.session.commit()
+    comment.set_depth()
 
     return jsonify(comment_text=comment_text, date=comment.pretty_date(),
-            username=g.user.username, comment_id=comment.id)
+            username=g.user.username, comment_id=comment.id, margin_left=comment.get_margin_left())
 

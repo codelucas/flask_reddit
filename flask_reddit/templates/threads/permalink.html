@@ -15,8 +15,7 @@
         {% if user is defined and user != None %}
         <h5>Submit a comment:</h5>
         <div class="comment-form-parent">
-            <textarea class="form-control thread-comment-box" 
-                name="comment" placeholder=""></textarea>       
+            <textarea class="form-control thread-comment-box"></textarea>       
             <button class="btn btn-sm btn-primary submit-comment main-submit">
                     Submit</button>
         </div>
@@ -38,17 +37,24 @@
 </div>
 
 <div class="row comments-tree">
-    {% for comment in thread.comments.all() %}
-    <div class="row comments-element" name="{{ comment.id }}"> 
-        <p class="comment-body">{{ comment.text }}</p>
-        <div class="post-listing-meta">
-            by: <a href="{{ url_for('users.home_page', username=comment.user.username) }}">
-                {{ comment.user.username }}</a> {{ comment.pretty_date() }} <a href="">reply</a>
-        </div>
-        <button style="display:none;" class="btn btn-sm btn-primary submit-comment">
+    {%- for comment in thread.get_comments() recursive %}
+        <div class="row comments-element" style="margin-left:{{ comment.get_margin_left() }}" 
+            name="{{ comment.id }}"> 
+            <p class="comment-body">{{ comment.text }}</p>
+            <div class="post-listing-meta">
+                by: <a href="{{ url_for('users.home_page', username=comment.user.username) }}">
+                    {{ comment.user.username }}</a> {{ comment.pretty_date() }} 
+                <a href="javascript:void(0)" class="comment-reply">reply</a>
+            </div>
+
+            <textarea class="nested-comment-text-box form-control"></textarea>
+            <button class="btn btn-sm btn-primary submit-comment nested-submit-comment-button">
                 Submit</button>
-    </div>
-    {% endfor %}
+        </div>
+        {%- if comment.get_comments() -%}
+            {{ loop(comment.get_comments()) }}
+        {%- endif %}
+    {%- endfor %}
 </div>
 
 <hr>
@@ -64,17 +70,30 @@ window.onload = (function() {
             // Don't need to include parent comment because we are commenting 
             // on a thread, not a comment!
             var parent_id = "";
+            var comment_text = "";
             var not_nested =  $(this).hasClass('main-submit').toString();
+            var $parent_comment = $(this).parent('div.comments-element');
             // the logic is funky because we are using string booleans...
             if (not_nested == 'false') {
                 // it is nested 
                 parent_id = $(this).parent('div.comments-element').attr('name');
+                $comment_box = $(this).parent('div.comments-element').children(
+                    'textarea.nested-comment-text-box')
+                $button_box = $(this).parent('div.comments-element').children(
+                    'button.nested-submit-comment-button');
+                comment_text = $comment_box.val();
+                $comment_box.val('');
+                $button_box.toggle();
+                $comment_box.toggle();
+
             } else {
                 // it isn't nested
+                $comment_box = $(this).parent('div.comment-form-parent').children(
+                    'textarea.thread-comment-box');
+                comment_text = $comment_box.val();
+                $comment_box.val('');
             }
             var thread_id = "{{ thread.id }}";
-            var comment_text = $(this).parent('div.comment-form-parent').children(
-                'textarea.thread-comment-box').val();
             var post_to = '/apis/comments/submit/';
             {% if user is defined and user != None %}
                 $.post(post_to, { 
@@ -82,20 +101,31 @@ window.onload = (function() {
                     thread_id: thread_id, 
                     comment_text: comment_text },
                     function(response) {
-                        $('div.comments-tree').prepend(
-                            '<div class="row comments-element" name="'+ response.comment_id +'">' +
+                        var write_string = 
+                            '<div class="row comments-element" name="'+ response.comment_id + '"' + 
+                            'style="margin-left:' + response.margin_left + '">' +
                             '<p class="comment-body">' + response.comment_text + '</p>' + 
                             '<div class="post-listing-meta">' + 
                             'by: <a href="{{ config.ROOT_URL }}/users/{{ user.username }}/">' +
                             '{{ user.username }}</a>' + 
-                            ' ' + response.date + ' <a href="">reply</a>' +
+                            ' ' + response.date + 
+                            ' <a href="javascript:void(0)" class="comment-reply">reply</a>' +
                             '</div>'
-                        );
+                        if (not_nested == 'true') {
+                            $('div.comments-tree').prepend(write_string);
+                        } else {
+                            $parent_comment.after(write_string);
+                        }
                     }, 'json'
                 )              
             {% else %}
                 alert("You must be logged in to do that!");
             {% endif %}
+        });
+
+        $('a.comment-reply').on('click', function() {
+            $(this).parent().parent().children('textarea.nested-comment-text-box').toggle();
+            $(this).parent().parent().children('button.nested-submit-comment-button').toggle();
         });
     });
 });

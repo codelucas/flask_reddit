@@ -3,7 +3,7 @@
 {% block content %}
   <div class="row">
   <div class="col-lg-6" style="float: none; margin: 20px auto;">
-  {% from "forms/macros.html" import render_field %}
+  {% from "macros.html" import render_field %}
   <form method="POST" action="." class="form bs-example form-horizontal">
     {{ form.csrf_token }}
     {{ render_field(form.username, class="form-control", placeholder="username", autofocus="") }}

@@ -58,6 +58,18 @@ class Thread(db.Model):
     def __repr__(self):
         return '<Thread %r>' % (self.title)
 
+    def get_comments(self, order_by='timestamp'):
+        """
+        default order by timestamp
+        return only top levels!
+        """
+        if order_by == 'timestamp':
+            return self.comments.filter_by(depth=1).\
+                order_by(db.desc(Comment.created_on)).all()[:500]
+        else:
+            return self.comments.filter_by(depth=1).\
+                order_by(db.desc(Comment.created_on)).all()[:500]
+
     def get_status(self):
         """
         returns string form of status, 0 = 'dead', 1 = 'alive'
@@ -124,13 +136,13 @@ class Comment(db.Model):
     parent_id = db.Column(db.Integer, db.ForeignKey('threads_comment.id'))
     children = db.relationship('Comment', backref=db.backref('parent',
             remote_side=[id]), lazy='dynamic')
+
     depth = db.Column(db.Integer, default=1) # start at depth 1
 
     created_on = db.Column(db.DateTime, default=db.func.now())
     updated_on = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
 
     # upvotes = db.Column(db.Integer)
-    # downvotes = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Comment %r>' % (self.text[:25])
@@ -140,6 +152,32 @@ class Comment(db.Model):
         self.user_id = user_id
         self.text = text
         self.parent_id = parent_id
+
+    def set_depth(self):
+        """
+        call after initializing
+        """
+        if self.parent:
+            self.depth = self.parent.depth + 1
+            db.session.commit()
+
+    def get_comments(self, order_by='timestamp'):
+        """
+        default order by timestamp
+        """
+        if order_by == 'timestamp':
+            return self.children.order_by(db.desc(Comment.created_on)).all()[:500]
+        else:
+            return self.comments.order_by(db.desc(Comment.created_on)).all()[:500]
+
+    def get_margin_left(self):
+        """
+        nested comments are pushed right on a page
+        -15px is our default margin for top level comments
+        """
+        margin_left = 15 + ((self.depth-1) * 32)
+        margin_left = min(margin_left, 680)
+        return str(margin_left) + "px"
 
     def get_age(self):
         """

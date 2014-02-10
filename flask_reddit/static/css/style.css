@@ -39,7 +39,20 @@ body {
 
 .comments-element {
     margin-bottom: 10px;
-    margin-left: 15px;
+}
+
+.nested-comment-text-box {
+    display: none;
+    width: 250px;
+}
+
+.nested-submit-comment-button {
+    display: none;
+    width: 50px;
+    height: 25px;
+    font-size: 9px;
+    margin-top: -19px;
+    margin-left: 5px;
 }
 
 .right-bar {

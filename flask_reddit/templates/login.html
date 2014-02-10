@@ -7,7 +7,7 @@
             <div class="account-wall">
                 <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
                     alt="">
-                {% from "forms/macros.html" import render_field %}
+                {% from "macros.html" import render_field %}
                 <form method="POST" action="." class="form-signin">
                 {{ form.csrf_token }}
                 {{ render_field(form.email, class="form-control", 
