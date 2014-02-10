@@ -16,6 +16,7 @@ class User(db.Model):
     created_on = db.Column(db.DateTime, default=db.func.now())
 
     threads = db.relationship('Thread', backref='user', lazy='dynamic')
+    comments = db.relationship('Comment', backref='user', lazy='dynamic')
 
     # upvotes = db.Column()
     # downvotes = db.Column()

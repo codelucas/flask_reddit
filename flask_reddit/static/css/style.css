@@ -38,6 +38,10 @@
     margin: 20px 0 80px 0;
 }
 
+.the-500-image {
+    margin: -20px 0 80px 0;
+}
+
 .post-listing-meta {
     font-size: 13px;
 }

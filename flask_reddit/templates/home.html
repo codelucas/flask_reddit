@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="col-lg-9">
+<div class="col-lg-9">
   {% block left %}
       {% for thread in threads %}
         <div class="row listing-row">
@@ -30,9 +30,9 @@
         </div>
       {% endfor %}
   {% endblock %}
-  </div>
+</div>
 
-  <div class="col-lg-3">
+<div class="col-lg-3">
   {% block right %}
     {% if user is defined and user != None %}
         <a href="{{ config.ROOT_URL }}/threads/submit"><button class="btn btn-primary">
@@ -47,5 +47,54 @@
         <li></li>
     </ul>
   {% endblock %}
-  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+window.onload = (function() {
+    $(document).ready(function() {
+        // $(".btn-custom").click(function() {  
+        //     $(this).parent().next("div.proof_box").toggle('blind'); 
+        // });
+        $('button.submit-comment').click(function() {
+            // We will submit user id data via session.
+            // Don't need to include parent comment because we are commenting 
+            // on a thread, not a comment!
+            var parent_id = "";
+            var not_nested =  $(this).hasClass('main-submit').toString();
+            // the logic is funky because we are using string booleans...
+            if (not_nested == 'false') {
+                // it is nested 
+                parent_id = $(this).parent('div.comments-element').attr('name');
+            } else {
+                // it isn't nested
+            }
+            var thread_id = "{{ thread.id }}";
+            var comment_text = $(this).parent('div.comment-form-parent').children(
+                'textarea.thread-comment-box').val();
+            var post_to = '/api/comments/submit/';
+            {% if user is defined and user != None %}
+                $.post(post_to, { 
+                    parent_id: parent_id, // empty if top-level (none)
+                    thread_id: thread_id, 
+                    comment_text: comment_text },
+                    function(response) {
+                        $('div.comments-tree').prepend(
+                            '<div class="row comments-element">' +
+                            '<p>' + response.comment_text + '</p>' + 
+                            '<br>' +
+                            '<div class="post-listing-meta">' + 
+                            'by: ' + response.username + ' - ' + response.date +
+                            '</div>'
+                        );
+                    }, 'json'
+                )              
+            {% else %}
+                alert("You must be logged in to do that!");
+            {% endif %}
+        });
+    });
+});
+</script>
 {% endblock %}

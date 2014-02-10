@@ -24,6 +24,10 @@ app.url_map.converters['regex'] = RegexConverter
 def not_found(error):
     return render_template('404.html'), 404
 
+@app.errorhandler(500)
+def not_found(error):
+    return render_template('500.html'), 500
+
 from flask_reddit.users.views import mod as users_module
 app.register_blueprint(users_module)
 
@@ -32,6 +36,9 @@ app.register_blueprint(threads_module)
 
 from flask_reddit.frontends.views import mod as frontends_module
 app.register_blueprint(frontends_module)
+
+from flask_reddit.apis.views import mod as apis_module
+app.register_blueprint(apis_module)
 
 def custom_render(template, *args, **kwargs):
     """

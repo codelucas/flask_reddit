@@ -135,26 +135,30 @@ class Comment(db.Model):
     def __repr__(self):
         return '<Comment %r>' % (self.text[:25])
 
-    def __init__(self, thread_id, comment_id, user_id, text):
+    def __init__(self, thread_id, user_id, text, parent_id=None):
         self.thread_id = thread_id
         self.user_id = user_id
         self.text = text
+        self.parent_id = parent_id
 
     def get_age(self):
         """
-        returns the raw age of this comment in seconds
+        returns the raw age of this thread in seconds
         """
-        pass
+        return (self.created_on - datetime.datetime(1970,1,1)).total_seconds()
+
+    def pretty_date(self, typeof='created'):
+        """
+        returns a humanized version of the raw age of this thread,
+        eg: 34 minutes ago versus 2040 seconds ago.
+        """
+        if typeof == 'created':
+            return utils.pretty_date(self.created_on)
+        elif typeof == 'updated':
+            return utils.pretty_date(self.updated_on)
 
     def vote(self, direction):
         """
-        """
-        pass
-
-    def get_human_age(self):
-        """
-        returns a humanized version of the raw age of this comment,
-        eg: 34 minutes ago versus 2040 seconds ago.
         """
         pass
 
@@ -163,5 +167,3 @@ class Comment(db.Model):
         when someone comments on this particular comment
         """
         pass
-
-

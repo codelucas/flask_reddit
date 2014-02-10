@@ -14,11 +14,12 @@
     <div class="col-lg-6 thread-comment-section">
         {% if user is defined and user != None %}
         <h5>Submit a comment:</h5>
-        <form method="POST" action="." class="form bs-example form-horizontal">
-            <textarea class="form-control thread-comment-box" id="text" 
+        <div class="comment-form-parent">
+            <textarea class="form-control thread-comment-box" 
                 name="comment" placeholder=""></textarea>       
-            <a href=""><button class="btn btn-sm btn-primary">Submit</button></a>
-        </form>
+            <button class="btn btn-sm btn-primary submit-comment main-submit">
+                    Submit</button>
+        </div>
         {% else %}
         <a href="{{ url_for('frontends.login') }}">Login</a> or 
         <a href="{{ url_for('frontends.register') }}">register</a> to comment!
@@ -26,12 +27,23 @@
     </div>
 </div>
 <br>
-<div class="row">
+<div class="row comments-tree">
     <h4>Comments section</h4>
     <hr>
     {% for comment in thread.comments.all() %}
-        
+    <div class="row comments-element" name="{{ comment.id }}"> 
+        <p>{{ comment.text }}</p>
+        <br>
+        <div class="post-listing-meta">
+            by: {{ comment.user.username }} {{ comment.pretty_date() }}
+        </div>
+        <button class="btn btn-sm btn-primary submit-comment">
+                Submit</button>
+    </div>
     {% endfor %}
 </div>
 
 {% endblock %}
+
+
+
