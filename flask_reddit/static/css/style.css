@@ -3,6 +3,10 @@
  *  fairly organized!
  */
 
+body {
+
+}
+
 .well {
     background-color: #fff;
 }
@@ -27,6 +31,21 @@
 .listing-vote-box:hover {
     color: #eb6864 !important;
     text-decoration: none !important;
+}
+
+.comment-body {
+    margin-bottom: 2px;
+}
+
+.comments-element {
+    margin-bottom: 10px;
+    margin-left: 15px;
+}
+
+.right-bar {
+    position: fixed;
+    top: 80px;
+    right: 100px;
 }
 
 .main-box {

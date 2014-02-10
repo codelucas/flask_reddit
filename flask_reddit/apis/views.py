@@ -36,5 +36,5 @@ def submit_comment():
     db.session.commit()
 
     return jsonify(comment_text=comment_text, date=comment.pretty_date(),
-            username=g.user.username)
+            username=g.user.username, comment_id=comment.id)
 
