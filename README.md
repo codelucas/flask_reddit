@@ -3,13 +3,15 @@ flask\_reddit
 
 *I'm still working on this, but this project should be finished in an expected 1-2 weeks.*
 
-**flask_reddit** is an extendable + minimalist [Reddit](http://reddit.com) clone built with flask.
+**flask_reddit** is an extendable + minimalist [Reddit](http://reddit.com) clone.
 
 We utilize: 
+- `flask` as the web framework.
 - `nginx` as the HTTP server  
 - `gunicon` as the wsgi serer.
 - `MySQL` for our database 
 - `flask-sqlalchemy` as our ORM.
+- `bootstrap-journal` theme makes us beautiful.
 - `virtualenv` emcompasses everything. 
 - `supervisord` makes sure our service never crashes.
 
