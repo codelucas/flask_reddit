@@ -5,11 +5,15 @@ flask\_reddit
 
 **flask_reddit** is an extendable + minimalist [Reddit](http://reddit.com) clone built with flask.
 
-We utilize `nginx` as the HTTP server and `gunicon` as the wsgi serer.
-We also use `MySQL` for our database and `flask-sqlalchemy` as our ORM.
+We utilize: 
+- `nginx` as the HTTP server  
+- `gunicon` as the wsgi serer.
+- `MySQL` for our database 
+- `flask-sqlalchemy` as our ORM.
+- `virtualenv` emcompasses everything. 
+- `supervisord` makes sure our service never crashes.
 
-We run everything in a `virtualenv` and make sure our service stays online 
-with `supervisord` and thats pretty much it!
+And thats pretty much it!
 
 All of the configutations are in this repository. Deployment instructions 
 will be out soon.
