@@ -36,12 +36,46 @@ def submit_comment():
         comment = Comment(thread_id=thread_id, user_id=g.user.id,
                 text=comment_text, parent_id=parent_id)
     else:
-        comment = Comment(thread_id=thread_id, user_id=g.user.id, text=comment_text)
+        comment = Comment(thread_id=thread_id, user_id=g.user.id,
+            text=comment_text)
 
     db.session.add(comment)
     db.session.commit()
     comment.set_depth()
 
     return jsonify(comment_text=comment_text, date=comment.pretty_date(),
-            username=g.user.username, comment_id=comment.id, margin_left=comment.get_margin_left())
+            username=g.user.username, comment_id=comment.id,
+            margin_left=comment.get_margin_left())
+
+@mod.route('/threads/vote/', methods=['POST'])
+@requires_login
+def vote_thread():
+    """
+    Submit votes via ajax
+    """
+    thread_id = int(request.form['thread_id'])
+    user_id = g.user.id
+
+    if not thread_id:
+        abort(404)
+
+    thread = Thread.query.get_or_404(int(thread_id))
+    thread.vote(user_id=user_id)
+    return jsonify(new_votes=thread.get_votes())
+
+@mod.route('/comments/vote/', methods=['POST'])
+@requires_login
+def vote_comment():
+    """
+    Submit votes via ajax
+    """
+    comment_id = int(request.form['comment_id'])
+    user_id = g.user.id
+
+    if not comment_id:
+        abort(404)
+
+    comment = Comment.query.get_or_404(int(comment_id))
+    comment.vote(user_id=user_id)
+    return jsonify(new_votes=comment.get_votes())
 

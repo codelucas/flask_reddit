@@ -28,13 +28,13 @@ class Thread(db.Model):
     link = db.Column(db.String(THREAD.MAX_LINK), default=None)
     thumbnail = db.Column(db.String(THREAD.MAX_LINK), default=None)
 
+    # votes = db.Column(db.Integer, default=1)
+
     user_id = db.Column(db.Integer, db.ForeignKey('users_user.id'))
 
     created_on = db.Column(db.DateTime, default=db.func.now())
     updated_on = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
 
-    # upvotes = db.Column()
-    # downvotes = db.Column()
     comments = db.relationship('Comment', backref='thread', lazy='dynamic')
 
     status = db.Column(db.SmallInteger, default=THREAD.ALIVE)
@@ -82,25 +82,25 @@ class Thread(db.Model):
         elif typeof == 'updated':
             return utils.pretty_date(self.updated_on)
 
-    def comment_on(self):
+    def get_voter_ids(self):
         """
-        when someone comments on this particular thread
+        return ids of users who voted this thread up
         """
-        pass
+        select = thread_upvotes.select(thread_upvotes.c.thread_id==self.id)
+        rs = db.engine.execute(select)
+        ids = rs.fetchall() # list of tuples
+        return ids
 
-    def get_score(self):
+    def vote(self, user_id):
         """
-        return number of matching rows in thread_upvotes
+        allow a user to vote on a thread
         """
-        pass
-
-
-    def vote(self):
-        """
-        ins = thread_upvotes.insert(user_id=user.id, thread_id=self.id)
-        db.engine.execute(ins)
-        """
-        pass
+        db.engine.execute(thread_upvotes.insert(),
+                user_id   =     int(user_id),
+                thread_id =     self.id
+        )
+        self.votes = self.votes + 1
+        db.session.commit()
 
     def extract_thumbnail(self):
         """

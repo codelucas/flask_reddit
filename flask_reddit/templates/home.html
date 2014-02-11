@@ -44,17 +44,18 @@
 <div class="col-lg-3 right-bar">
   {% block right %}
     {% if user is defined and user != None %}
-        <div class="row">
+
+    {% else %}
+        <h4 class="pre-reg-info">Please register or login to post!</h4>
+    {% endif %}
+    <div class="row">
         <a href="{{ config.ROOT_URL }}/threads/submit"><button class="btn btn-primary submit-post-button">
                 Submit a post</button></a>
         </div>
         <div class="row">
         <a href=""><button type="button" class="btn btn-primary 
                 inverse-white-button add-subreddit-button"></a> Create Community +</button>
-        </div>
-    {% else %}
-        <h4>Please register or login to post!</h4>
-    {% endif %}
+    </div>
 
     <ul id="subreddit-list">
         <li><a href="/r/funny">funny</a></li>

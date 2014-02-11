@@ -68,13 +68,18 @@ body {
 
 #subreddit-list, a {
     color: #000;
-
     text-decoration: none;
 }
 
 #subreddit-list a:hover, #subreddit-list a:focus {
     color: #eb6864;
     text-decoration: underline;
+}
+
+
+.pre-reg-info {
+    margin-bottom: 21px;
+    margin-left: -15px;
 }
 
 .submit-post-button {
