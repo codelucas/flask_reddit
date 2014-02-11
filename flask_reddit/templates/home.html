@@ -6,8 +6,12 @@
       {% for thread in threads %}
         <div class="row listing-row">
           <div class="col-lg-1 listing-vote-box">  
-              <a href="{{ config.ROOT_URL }}/api/upvote/{{ thread.id }}" 
-                  class="listing-vote-box">▲</a>
+              <div class="listing-vote-box">
+                  <a href="javascript:void(0)" class="listing-vote-button">▲</a>
+              </div>
+              <div class="listing-votes-number">
+                  1
+              </div>
           </div>
           <div class="col-lg-9 listing-text">  
               {% if thread.link %}
@@ -29,24 +33,36 @@
           </div>
         </div>
       {% endfor %}
+
+      <ul class="pager pull-left">
+        <li><a href="?page=prev">prev</a></li>
+        <li><a href="?page=next">next</a></li>
+      </ul>
   {% endblock %}
 </div>
 
 <div class="col-lg-3 right-bar">
   {% block right %}
     {% if user is defined and user != None %}
-        <a href="{{ config.ROOT_URL }}/threads/submit"><button class="btn btn-primary">
+        <div class="row">
+        <a href="{{ config.ROOT_URL }}/threads/submit"><button class="btn btn-primary submit-post-button">
                 Submit a post</button></a>
+        </div>
+        <div class="row">
+        <a href=""><button type="button" class="btn btn-primary 
+                inverse-white-button add-subreddit-button"></a> Create Community +</button>
+        </div>
     {% else %}
         <h4>Please register or login to post!</h4>
     {% endif %}
-    <hr>
-    <h3>List of subreddits</h3>
-    <ul>
-        <li></li>
-        <li></li>
+
+    <ul id="subreddit-list">
+        <li><a href="/r/funny">funny</a></li>
+        <li><a href="/r/news">news</a></li>
     </ul>
+    <a href-"#">view all</a>
   {% endblock %}
 </div>
+
 {% endblock %}
 

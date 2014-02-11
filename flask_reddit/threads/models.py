@@ -11,20 +11,10 @@ thread_upvotes = db.Table('thread_upvotes',
     db.Column('thread_id', db.Integer, db.ForeignKey('threads_thread.id'))
 )
 
-# thread_downvotes = db.Table('thread_downvotes',
-#     db.Column('user_id', db.Integer, db.ForeignKey('users_user.id')),
-#     db.Column('thread_id', db.Integer, db.ForeignKey('threads_thread.id'))
-# )
-
 comment_upvotes = db.Table('comment_upvotes',
     db.Column('user_id', db.Integer, db.ForeignKey('users_user.id')),
     db.Column('comment_id', db.Integer, db.ForeignKey('threads_comment.id'))
 )
-
-# comment_downvotes = db.Table('comment_downvotes',
-#     db.Column('user_id', db.Integer, db.ForeignKey('users_user.id')),
-#     db.Column('comment_id', db.Integer, db.ForeignKey('threads_comment.id'))
-# )
 
 class Thread(db.Model):
     """
@@ -98,12 +88,16 @@ class Thread(db.Model):
         """
         pass
 
-    def vote(self, direction):
+    def get_score(self):
         """
-        if direction == 'up':
-            ins = thread_upvotes.insert(user_id=user.id, thread_id=self.id)
-        elif direction == 'down':
-            ins = thread_downvotes.insert(user_id=user.id, thread_id=self.id)
+        return number of matching rows in thread_upvotes
+        """
+        pass
+
+
+    def vote(self):
+        """
+        ins = thread_upvotes.insert(user_id=user.id, thread_id=self.id)
         db.engine.execute(ins)
         """
         pass

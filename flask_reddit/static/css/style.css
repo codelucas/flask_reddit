@@ -29,6 +29,10 @@ body {
 }
 
 .listing-vote-box:hover {
+
+}
+
+.listing-vote-button:hover, .listing-vote-button:focus {
     color: #eb6864 !important;
     text-decoration: none !important;
 }
@@ -39,6 +43,42 @@ body {
 
 .comments-element {
     margin-bottom: 10px;
+}
+
+.inverse-white-button {
+    color: #eb6864;
+    background-color: #fff;
+    border-color: #eb6864;
+}
+
+.add-subreddit-button {
+    margin-bottom: 21px;
+}
+
+.add-subreddit-button:hover, .add-subreddit-button:focus {
+    color: #eb6864;
+    background-color: #FFF5F5;
+    border-color: #eb6864;
+}
+
+#subreddit-list {
+    padding-left: 0px;
+    margin-bottom: 21px;
+}
+
+#subreddit-list, a {
+    color: #000;
+
+    text-decoration: none;
+}
+
+#subreddit-list a:hover, #subreddit-list a:focus {
+    color: #eb6864;
+    text-decoration: underline;
+}
+
+.submit-post-button {
+    margin-bottom: 21px;
 }
 
 .nested-comment-text-box {
@@ -136,6 +176,14 @@ body {
 .login-nav-text a:hover {
     color: #eb6864; 
     text-decoration: underline;
+}
+
+.listing-votes-number {
+    margin-left: 4px;
+}
+
+#footer-row {
+    font-size: 11px;
 }
 
 /*

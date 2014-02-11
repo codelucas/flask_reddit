@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 """
-from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for, jsonify
+from flask import (Blueprint, request, render_template, flash, g,
+        session, redirect, url_for, jsonify, abort)
 from werkzeug import check_password_hash, generate_password_hash
 
 from flask_reddit import db
@@ -26,6 +27,10 @@ def submit_comment():
     thread_id = int(request.form['thread_id'])
     comment_text = request.form['comment_text']
     parent_id = request.form['parent_id'] # empty means none
+
+    if not comment_text:
+        abort(404)
+
     if len(parent_id) > 0:
         parent_id = int(parent_id)
         comment = Comment(thread_id=thread_id, user_id=g.user.id,
