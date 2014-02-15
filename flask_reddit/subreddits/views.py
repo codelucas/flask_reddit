@@ -34,9 +34,9 @@ def meets_subreddit_criterea(subreddit):
         flash('someone has already posted the same link as you!')
         return False
     """
-    pass
+    return True
 
-@mod.route('/api/submit/', methods=['GET', 'POST'])
+@mod.route('/subreddits/submit/', methods=['GET', 'POST'])
 def submit():
     """
     """
@@ -52,13 +52,13 @@ def submit():
         subreddit = Subreddit(name=name, desc=desc, admin_id=user_id)
 
         if not meets_subreddit_criterea(subreddit):
-            return render_template('threads/submit.html', form=form, user=g.user)
+            return render_template('subreddits/submit.html', form=form, user=g.user)
 
         db.session.add(subreddit)
         db.session.commit()
 
         flash('Thanks for starting a great community!')
-        return redirect(url_for('/r/%s' % subreddit.name))
+        return redirect(url_for('/r/%s/' % subreddit.name))
     return render_template('/subreddits/submit.html', form=form, user=g.user)
 
 @mod.route('/delete/', methods=['GET', 'POST'])
