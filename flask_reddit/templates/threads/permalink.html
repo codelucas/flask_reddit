@@ -17,7 +17,7 @@
             {{ thread.user.username }}.</a>
         <br>
         <br>
-        <p>{{ thread.text }}</p>
+        <p class="thread-text">{{ thread.text }}</p>
     </div>
 </div>
 
@@ -74,6 +74,7 @@
 {% endblock %}
 
 {% block scripts %}
+{{ super() }}
 <script type="text/javascript">
 window.onload = (function() {
     $(document).ready(function() {
@@ -139,7 +140,7 @@ window.onload = (function() {
                             $parent_comment.after(write_string);
                         }
                     }, 'json'
-                )              
+                );              
             {% else %}
                 alert("You must be logged in to do that!");
             {% endif %}
@@ -149,6 +150,8 @@ window.onload = (function() {
             $(this).parent().parent().children('textarea.nested-comment-text-box').toggle();
             $(this).parent().parent().children('button.nested-submit-comment-button').toggle();
         });
+        //
+        //
     });
 });
 </script>

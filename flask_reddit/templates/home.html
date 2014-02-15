@@ -4,13 +4,19 @@
 <div class="col-lg-9 col-md-9 col-sm-7 col-xs-5 left-bar">
   {% block left %}
       {% for thread in threads %}
-        <div class="row listing-row">
+        <div name="{{ thread.id }}" class="row listing-row">
           <div class="col-lg-1 listing-vote-box">  
               <div class="listing-vote-box">
-                  <a href="javascript:void(0)" class="listing-vote-button">▲</a>
+                  {% if user is defined and user != None and thread.has_voted(user.id) %}
+                      <a style="color:#eb6864;" href="javascript:void(0)" 
+                          class="listing-vote-button">▲</a>
+                  {% else %}
+                      <a style="color:#000;" href="javascript:void(0)" 
+                          class="listing-vote-button">▲</a>
+                  {% endif %}
               </div>
               <div class="listing-votes-number">
-                  1
+                  {{ thread.votes }}
               </div>
           </div>
           <div class="col-lg-9 listing-text">  
@@ -67,3 +73,35 @@
 
 {% endblock %}
 
+{% block scripts %}
+<script type="text/javascript">
+window.onload = (function() {
+    $(document).ready(function() {
+        $(document).on('click', 'a.listing-vote-button', function() {
+            var $vote_button = $(this); // cache this! can't access in callback!
+            var thread_id = $vote_button.parent().parent().parent().attr('name');
+            var post_to = '/apis/threads/vote/';
+            if ($vote_button.css("color") == 'rgb(235, 104, 100)') {
+                $vote_button.css("color", "#000");
+            } else {
+                $vote_button.css("color", "#eb6864");
+            }
+            {% if user is defined and user != None %}
+                $.post(post_to, { thread_id: thread_id },
+                    function(response) {
+                        var new_vote_count = response.new_votes.toString();
+                        var vote_status = response.vote_status;
+                        $vote_button.parent().parent().
+                            children('div.listing-votes-number').html(new_vote_count);
+                    }, 'json'
+                );
+            {% else %}
+                alert("You must be logged in to do that!");
+            {% endif %}
+        });
+        //
+        //
+    });
+});
+</script>
+{% endblock %}

@@ -135,6 +135,10 @@ body {
     margin-top: 0px;
 }
 
+.thread-text {
+    margin: 0 0 0 -30px;
+}
+
 .listing-title {
     margin-top: 0px;
 }

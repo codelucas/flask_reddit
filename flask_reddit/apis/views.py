@@ -54,8 +54,8 @@ def vote_thread():
         abort(404)
 
     thread = Thread.query.get_or_404(int(thread_id))
-    thread.vote(user_id=user_id)
-    return jsonify(new_votes=thread.get_votes())
+    vote_status = thread.vote(user_id=user_id)
+    return jsonify(new_votes=thread.votes, vote_status=vote_status)
 
 @mod.route('/comments/vote/', methods=['POST'])
 @requires_login

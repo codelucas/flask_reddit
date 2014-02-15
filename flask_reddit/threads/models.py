@@ -112,17 +112,50 @@ class Thread(db.Model):
         ids = rs.fetchall() # list of tuples
         return ids
 
+    def has_voted(self, user_id):
+        """
+        did the user vote already
+        """
+        select_votes = thread_upvotes.select(
+                db.and_(
+                    thread_upvotes.c.user_id == user_id,
+                    thread_upvotes.c.thread_id == self.id
+                )
+        )
+        rs = db.engine.execute(select_votes)
+        return False if rs.rowcount == 0 else True
+
     def vote(self, user_id):
         """
-        allow a user to vote on a thread
+        allow a user to vote on a thread. if we have voted already
+        (and they are clicking again), this means that they are trying
+        to unvote the thread, return status of the vote for that user
         """
-        db.engine.execute(
-            thread_upvotes.insert(),
-            user_id   = int(user_id),
-            thread_id = self.id
-        )
-        self.votes = self.votes + 1
-        db.session.commit()
+        already_voted = self.has_voted(user_id)
+        vote_status = None
+        if not already_voted:
+            # vote up the thread
+            db.engine.execute(
+                thread_upvotes.insert(),
+                user_id   = user_id,
+                thread_id = self.id
+            )
+            self.votes = self.votes + 1
+            vote_status = True
+        else:
+            # unvote the thread
+            db.engine.execute(
+                thread_upvotes.delete(
+                    db.and_(
+                        thread_upvotes.c.user_id == user_id,
+                        thread_upvotes.c.thread_id == self.id
+                    )
+                )
+            )
+            self.votes = self.votes - 1
+            vote_status = False
+        db.session.commit() # for the vote count
+        return vote_status
 
     def extract_thumbnail(self):
         """
