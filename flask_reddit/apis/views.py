@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """
+All view code for async get/post calls towards the server
+must be contained in this file.
 """
 from flask import (Blueprint, request, render_template, flash, g,
         session, redirect, url_for, jsonify, abort)
@@ -26,24 +28,16 @@ def submit_comment():
     """
     thread_id = int(request.form['thread_id'])
     comment_text = request.form['comment_text']
-    parent_id = request.form['parent_id'] # empty means none
+    comment_parent_id = request.form['parent_id'] # empty means none
 
     if not comment_text:
         abort(404)
 
-    if len(parent_id) > 0:
-        parent_id = int(parent_id)
-        comment = Comment(thread_id=thread_id, user_id=g.user.id,
-                text=comment_text, parent_id=parent_id)
-    else:
-        comment = Comment(thread_id=thread_id, user_id=g.user.id,
-            text=comment_text)
+    thread = Thread.query.get_or_404(int(thread_id))
+    comment = thread.add_comment(comment_text, comment_parent_id,
+            g.user.id)
 
-    db.session.add(comment)
-    db.session.commit()
-    comment.set_depth()
-
-    return jsonify(comment_text=comment_text, date=comment.pretty_date(),
+    return jsonify(comment_text=comment.text, date=comment.pretty_date(),
             username=g.user.username, comment_id=comment.id,
             margin_left=comment.get_margin_left())
 

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """
+All database abstractions for threads and comments
+go in this file.
 """
 from flask_reddit import db
 from flask_reddit.threads import constants as THREAD
@@ -28,16 +30,15 @@ class Thread(db.Model):
     link = db.Column(db.String(THREAD.MAX_LINK), default=None)
     thumbnail = db.Column(db.String(THREAD.MAX_LINK), default=None)
 
-    # votes = db.Column(db.Integer, default=1)
-
     user_id = db.Column(db.Integer, db.ForeignKey('users_user.id'))
 
     created_on = db.Column(db.DateTime, default=db.func.now())
     updated_on = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
-
     comments = db.relationship('Comment', backref='thread', lazy='dynamic')
 
     status = db.Column(db.SmallInteger, default=THREAD.ALIVE)
+
+    votes = db.Column(db.Integer, default=1)
 
     def __init__(self, title, text, link, user_id):
         self.title = title
@@ -55,10 +56,10 @@ class Thread(db.Model):
         """
         if order_by == 'timestamp':
             return self.comments.filter_by(depth=1).\
-                order_by(db.desc(Comment.created_on)).all()[:500]
+                order_by(db.desc(Comment.created_on)).all()[:THREAD.MAX_COMMENTS]
         else:
             return self.comments.filter_by(depth=1).\
-                order_by(db.desc(Comment.created_on)).all()[:500]
+                order_by(db.desc(Comment.created_on)).all()[:THREAD.MAX_COMMENTS]
 
     def get_status(self):
         """
@@ -70,7 +71,7 @@ class Thread(db.Model):
         """
         returns the raw age of this thread in seconds
         """
-        return (self.created_on - datetime.datetime(1970,1,1)).total_seconds()
+        return (self.created_on - datetime.datetime(1970, 1, 1)).total_seconds()
 
     def pretty_date(self, typeof='created'):
         """
@@ -81,6 +82,26 @@ class Thread(db.Model):
             return utils.pretty_date(self.created_on)
         elif typeof == 'updated':
             return utils.pretty_date(self.updated_on)
+
+    def add_comment(self, comment_text, comment_parent_id, user_id):
+        """
+        add a comment to this particular thread
+        """
+        if len(comment_parent_id) > 0:
+            # parent_comment = Comment.query.get_or_404(comment_parent_id)
+            # if parent_comment.depth + 1 > THREAD.MAX_COMMENT_DEPTH:
+            #    flash('You have exceeded the maximum comment depth')
+            comment_parent_id = int(comment_parent_id)
+            comment = Comment(thread_id=self.id, user_id=user_id,
+                    text=comment_text, parent_id=comment_parent_id)
+        else:
+            comment = Comment(thread_id=self.id, user_id=user_id,
+                    text=comment_text)
+
+        db.session.add(comment)
+        db.session.commit()
+        comment.set_depth()
+        return comment
 
     def get_voter_ids(self):
         """
@@ -95,9 +116,10 @@ class Thread(db.Model):
         """
         allow a user to vote on a thread
         """
-        db.engine.execute(thread_upvotes.insert(),
-                user_id   =     int(user_id),
-                thread_id =     self.id
+        db.engine.execute(
+            thread_upvotes.insert(),
+            user_id   = int(user_id),
+            thread_id = self.id
         )
         self.votes = self.votes + 1
         db.session.commit()
@@ -136,7 +158,7 @@ class Comment(db.Model):
     created_on = db.Column(db.DateTime, default=db.func.now())
     updated_on = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
 
-    # upvotes = db.Column(db.Integer)
+    votes = db.Column(db.Integer, default=1)
 
     def __repr__(self):
         return '<Comment %r>' % (self.text[:25])
@@ -160,9 +182,9 @@ class Comment(db.Model):
         default order by timestamp
         """
         if order_by == 'timestamp':
-            return self.children.order_by(db.desc(Comment.created_on)).all()[:500]
+            return self.children.order_by(db.desc(Comment.created_on)).all()[:THREAD.MAX_COMMENTS]
         else:
-            return self.comments.order_by(db.desc(Comment.created_on)).all()[:500]
+            return self.comments.order_by(db.desc(Comment.created_on)).all()[:THREAD.MAX_COMMENTS]
 
     def get_margin_left(self):
         """

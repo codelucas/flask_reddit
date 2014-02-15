@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 
 # For simplicity, these values are shared among both threads and comments.
-MAX_TITLE = 300
-MAX_BODY = 3000
-MAX_LINK = 250
+MAX_THREADS = 1000
+MAX_NAME = 50
+MAX_DESCRIPTION = 3000
+MAX_ADMINS = 2
 
-MAX_COMMENTS = 500
-MAX_DEPTH = 10
-
-# thread & comment status
+# status
 DEAD = 0
 ALIVE = 1
 
