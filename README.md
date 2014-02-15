@@ -1,5 +1,5 @@
 flask\_reddit
-============
+=============
 
 *I'm still working on this, but this project should be finished in an expected 1-2 weeks.*
 
@@ -8,7 +8,7 @@ flask\_reddit
 We utilize: 
 - `flask` as the web framework.
 - `nginx` as the HTTP server  
-- `gunicon` as the wsgi serer.
+- `gunicon` as the wsgi server.
 - `MySQL` for our database 
 - `flask-sqlalchemy` as our ORM.
 - `bootstrap-journal` theme makes us beautiful.

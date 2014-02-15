@@ -1,13 +1,19 @@
 {% extends "home.html" %}
 
 {% block left %}
-<div class="row listing-row">
+<div name="{{ thread.id }}" class="row listing-row">
     <div class="col-lg-1 listing-vote-box">
-        <div class="listing-vote-box">
-            <a href="javascript:void(0)" class="listing-vote-button">▲</a>
+        <div class="">
+            {% if user is defined and user != None and thread.has_voted(user.id) %}
+                <a data-voted="true" style="color:#eb6864;" href="javascript:void(0)" 
+                    class="listing-vote-button">▲</a>
+            {% else %}
+                <a data-voted="false" style="color:#000;" href="javascript:void(0)"
+                    class="listing-vote-button">▲</a>
+            {% endif %}
         </div>
         <div class="listing-votes-number">
-            1
+            {{ thread.votes }}
         </div>
     </div>
     <div class="col-lg-11 listing-text">
@@ -76,83 +82,81 @@
 {% block scripts %}
 {{ super() }}
 <script type="text/javascript">
-window.onload = (function() {
-    $(document).ready(function() {
-        $(document).on('click', 'button.submit-comment', function() {
-            // We will submit user id data via session.
-            // Don't need to include parent comment because we are commenting 
-            // on a thread, not a comment!
-            var parent_id = "";
-            var comment_text = "";
-            var not_nested =  $(this).hasClass('main-submit').toString();
-            var $parent_comment = $(this).parent('div.comments-element');
-            // the logic is funky because we are using string booleans...
-            if (not_nested == 'false') {
-                // it is nested 
-                parent_id = $(this).parent('div.comments-element').attr('name');
-                $comment_box = $(this).parent('div.comments-element').children(
-                    'textarea.nested-comment-text-box')
-                $button_box = $(this).parent('div.comments-element').children(
-                    'button.nested-submit-comment-button');
-                comment_text = $comment_box.val();
-                $comment_box.val('');
-                $button_box.toggle();
-                $comment_box.toggle();
+$(document).ready(function() {
+    $(document).on('click', 'button.submit-comment', function() {
+        // We will submit user id data via session.
+        // Don't need to include parent comment because we are commenting 
+        // on a thread, not a comment!
+        var parent_id = "";
+        var comment_text = "";
+        var not_nested =  $(this).hasClass('main-submit').toString();
+        var $parent_comment = $(this).parent('div.comments-element');
+        // the logic is funky because we are using string booleans...
+        if (not_nested == 'false') {
+            // it is nested 
+            parent_id = $(this).parent('div.comments-element').attr('name');
+            $comment_box = $(this).parent('div.comments-element').children(
+                'textarea.nested-comment-text-box')
+            $button_box = $(this).parent('div.comments-element').children(
+                'button.nested-submit-comment-button');
+            comment_text = $comment_box.val();
+            $comment_box.val('');
+            $button_box.toggle();
+            $comment_box.toggle();
 
-            } else {
-                // it isn't nested
-                $comment_box = $(this).parent('div.comment-form-parent').children(
-                    'textarea.thread-comment-box');
-                comment_text = $comment_box.val();
-                $comment_box.val('');
-            }
-            
-            if (comment_text == null || comment_text == '') {
-                alert("Please enter a valid comment!");
-                return;
-            }
+        } else {
+            // it isn't nested
+            $comment_box = $(this).parent('div.comment-form-parent').children(
+                'textarea.thread-comment-box');
+            comment_text = $comment_box.val();
+            $comment_box.val('');
+        }
+        
+        if (comment_text == null || comment_text == '') {
+            alert("Please enter a valid comment!");
+            return;
+        }
 
-            var thread_id = "{{ thread.id }}";
-            var post_to = '/apis/comments/submit/';
-            {% if user is defined and user != None %}
-                $.post(post_to, { 
-                    parent_id: parent_id, // empty if top-level (none)
-                    thread_id: thread_id, 
-                    comment_text: comment_text },
-                    function(response) {
-                        var write_string = 
-                            '<div class="row comments-element" name="'+ response.comment_id + '"' + 
-                            'style="margin-left:' + response.margin_left + '">' +
-                            '<p class="comment-body">' + response.comment_text + '</p>' + 
-                            '<div class="post-listing-meta">' + 
-                            'by: <a href="{{ config.ROOT_URL }}/users/{{ user.username }}/">' +
-                            '{{ user.username }}</a>' + 
-                            ' ' + response.date + 
-                            ' <a href="javascript:void(0)" class="comment-reply">reply</a>' +
-                            '</div>' +
-                            '<textarea class="nested-comment-text-box form-control"></textarea>' +
-                            '<button class="btn btn-sm btn-primary submit-comment ' + 
-                            'nested-submit-comment-button">Submit</button>';
- 
-                        if (not_nested == 'true') {
-                            $('div.comments-tree').prepend(write_string);
-                        } else {
-                            $parent_comment.after(write_string);
-                        }
-                    }, 'json'
-                );              
-            {% else %}
-                alert("You must be logged in to do that!");
-            {% endif %}
-        });
+        var thread_id = "{{ thread.id }}";
+        var post_to = '/apis/comments/submit/';
+        {% if user is defined and user != None %}
+            $.post(post_to, { 
+                parent_id: parent_id, // empty if top-level (none)
+                thread_id: thread_id, 
+                comment_text: comment_text },
+                function(response) {
+                    var write_string = 
+                        '<div class="row comments-element" name="'+ response.comment_id + '"' + 
+                        'style="margin-left:' + response.margin_left + '">' +
+                        '<p class="comment-body">' + response.comment_text + '</p>' + 
+                        '<div class="post-listing-meta">' + 
+                        'by: <a href="{{ config.ROOT_URL }}/users/{{ user.username }}/">' +
+                        '{{ user.username }}</a>' + 
+                        ' ' + response.date + 
+                        ' <a href="javascript:void(0)" class="comment-reply">reply</a>' +
+                        '</div>' +
+                        '<textarea class="nested-comment-text-box form-control"></textarea>' +
+                        '<button class="btn btn-sm btn-primary submit-comment ' + 
+                        'nested-submit-comment-button">Submit</button>';
 
-        $(document).on('click', 'a.comment-reply', function(e) {
-            $(this).parent().parent().children('textarea.nested-comment-text-box').toggle();
-            $(this).parent().parent().children('button.nested-submit-comment-button').toggle();
-        });
-        //
-        //
+                    if (not_nested == 'true') {
+                        $('div.comments-tree').prepend(write_string);
+                    } else {
+                        $parent_comment.after(write_string);
+                    }
+                }, 'json'
+            );              
+        {% else %}
+            alert("You must be logged in to do that!");
+        {% endif %}
     });
+
+    $(document).on('click', 'a.comment-reply', function(e) {
+        $(this).parent().parent().children('textarea.nested-comment-text-box').toggle();
+        $(this).parent().parent().children('button.nested-submit-comment-button').toggle();
+    });
+    //
+    //
 });
 </script>
 {% endblock %}
