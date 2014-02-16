@@ -150,6 +150,10 @@ body {
     text-decoration: underline;
 }
 
+.all-subreddits-label {
+    margin: 0px 0 20px 0px;
+}
+
 .navbar-default .navbar-brand:hover, .navbar-inverse .navbar-brand:focus {
     color: #eb6864;
     background-color: #fff;

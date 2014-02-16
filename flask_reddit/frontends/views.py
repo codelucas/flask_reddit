@@ -25,25 +25,36 @@ def get_subreddits():
     subreddits = Subreddit.query.filter(Subreddit.id != 1)[:25]
     return subreddits
 
-@mod.route('/')
-@mod.route('/<regex("trending"):trending>/')
-def home(trending=False):
+def process_thread_paginator(trending, subreddit=None):
     """
-    If not trending we order by creation date
+    abstracted because many sources pull from a thread listing
+    source (subreddit permalink, homepage, etc)
     """
     threads_per_page = 25
     cur_page = request.args.get('page') or 1
     cur_page = int(cur_page)
     thread_paginator = None
 
-    if trending:
-        thread_paginator = Thread.query.paginate(cur_page,
-                per_page=threads_per_page, error_out=True)
-    else:
-        thread_paginator = Thread.query.order_by(db.desc(Thread.created_on)).\
-                paginate(cur_page, per_page=threads_per_page, error_out=True)
+    # sexy line of code :)
+    base_query = subreddit.threads if subreddit else Thread.query
 
+    if trending:
+        thread_paginator = base_query.order_by(db.desc(Thread.votes)).\
+        paginate(cur_page, per_page=threads_per_page, error_out=True)
+    else:
+        thread_paginator = base_query.order_by(db.desc(Thread.created_on)).\
+                paginate(cur_page, per_page=threads_per_page, error_out=True)
+    return thread_paginator
+
+#@mod.route('/<regex("trending"):trending>/')
+@mod.route('/')
+def home(trending=False):
+    """
+    If not trending we order by creation date
+    """
+    trending = True if request.args.get('trending') else False
     subreddits = get_subreddits()
+    thread_paginator = process_thread_paginator(trending)
 
     return render_template('home.html', user=g.user,
             subreddits=subreddits, cur_subreddit=home_subreddit(),

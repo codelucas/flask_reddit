@@ -3,7 +3,7 @@
 """
 from flask import (Blueprint, request, render_template, flash, g,
         session, redirect, url_for, abort)
-from flask_reddit.frontends.views import get_subreddits
+from flask_reddit.frontends.views import get_subreddits, process_thread_paginator
 from flask_reddit.subreddits.forms import SubmitForm
 from flask_reddit.subreddits.models import Subreddit
 from flask_reddit.threads.models import Thread
@@ -83,7 +83,7 @@ def delete():
 def view_all():
     """
     """
-    return render_template('subreddits/all.html', subreddits=Subreddit.query.all())
+    return render_template('subreddits/all.html', user=g.user, subreddits=Subreddit.query.all())
 
 @mod.route('/<subreddit_name>/', methods=['GET'])
 def permalink(subreddit_name=""):
@@ -93,14 +93,8 @@ def permalink(subreddit_name=""):
     if not subreddit:
         abort(404)
 
-    threads_per_page = 25
-    cur_page = request.args.get('page') or 1
-    cur_page = int(cur_page)
-
-    # threads = subreddit.threads
-    thread_paginator = subreddit.threads.order_by(db.desc(Thread.created_on)).\
-            paginate(cur_page, per_page=threads_per_page, error_out=True)
-
+    trending = True if request.args.get('trending') else False
+    thread_paginator = process_thread_paginator(trending=trending, subreddit=subreddit)
     subreddits = get_subreddits()
 
     return render_template('home.html', user=g.user, thread_paginator=thread_paginator,
