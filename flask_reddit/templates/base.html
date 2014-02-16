@@ -57,6 +57,7 @@
               <p class="navbar-text login-nav-text">Logged in as 
                   <a href="{{ url_for('users.home_page', username=user.username) }}">
                       {{ user.username }}</a>
+                  ({{ user.get_thread_karma() }}, {{ user.get_comment_karma() }})
               </p>
               <li class="logout-button"><a href="{{ config.ROOT_URL }}/logout">Logout</a></li>
           {% endif %}

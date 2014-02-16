@@ -67,7 +67,7 @@ def submit(subreddit_name=None):
         db.session.commit()
 
         flash('thanks for submitting!')
-        return redirect(url_for('frontends.home'))
+        return redirect(url_for('subreddits.permalink', subreddit_name=subreddit.name))
     return render_template('threads/submit.html', form=form, user=g.user,
             cur_subreddit=subreddit, subreddits=get_subreddits())
 
