@@ -3,43 +3,43 @@
 {% block left %}
 <div class="container">
     <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6 user-profile-box">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-9 user-profile-box">
             <div class="row">
-                <div class="col-sm-6 col-md-4">
-                    <img src="http://placehold.it/380x500" alt="" 
-                        class="img-rounded img-responsive" />
-                </div>
                 <div class="col-sm-6 col-md-8">
                     <h4>{{ current_user.username }}</h4>
-                    <small><cite title="San Francisco, USA">San Francisco, USA 
+                    <p>Threads posted -- {{ user.threads.all()|length() }} | 
+                    Comments posted -- {{ user.comments.all()|length() }} | 
+                    Thread Karma -- <br> Comment Karma -- </p>
+                    <!--<small><cite title="San Francisco, USA">San Francisco, USA 
                         <i class="glyphicon glyphicon-map-marker">
                     </i></cite></small>
+                    -->
                     <p>
                     <i class="glyphicon glyphicon-envelope"></i>&emsp;{{ current_user.email }}
-                        <br />
-                        <i class="glyphicon glyphicon-globe"></i>
-                            <a href=""></a>
-                        <br />
-                        <i class="glyphicon glyphicon-gift"></i>&emsp;June 02, 1988</p>
+                    <br>
 
-                    <!-- Split button -->
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-primary">
-                            Social</button>
-                        <button type="button" class="btn btn-primary dropdown-toggle" 
-                            data-toggle="dropdown">
-                            <span class="caret"></span><span class="sr-only">Social</span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Twitter</a></li>
-                            <li><a href="https://plus.google.com/+Jquery2dotnet/posts">
-                                Google +</a></li>
-                            <li><a href="https://www.facebook.com/jquery2dotnet">Facebook</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Github</a></li>
-                        </ul>
-                    </div>
-                </div>
+                    <h3>Recently created threads</h3>
+                    <br>
+                    {% for thread in user.threads.all()[-7:]|reverse  %}
+                        <p>
+                            <a href="{{ thread.link }}">{{ thread.title }}</a>, posted 
+                            <a href="{{ config.ROOT_URL }}/threads/{{ thread.id }}/{{ thread.title|truncate(100)|replace(' ', '_') }}">
+                                {{ thread.pretty_date() }}</a>
+                        </p>
+                    {% endfor %}
+                        <p>see more ...</p>
+
+                    <h3>Recently created comments</h3>
+                    <br>
+                    {% for comment in user.comments.all()[-7:]|reverse %}
+                        <p>
+                        <i>{{ comment.text }}</i>, posted 
+                            <a href="{{ config.ROOT_URL }}/threads/{{ comment.thread.id }}/{{ comment.thread.title|truncate(100)|replace(' ', '_') }}">{{ comment.pretty_date() }}</a>
+                        </p>
+                    {% endfor %}
+                        <p>see more ...</p>
+                    <br>
+                 </div>
             </div>
         </div>
     </div>
