@@ -31,7 +31,7 @@ def home(trending=False):
     """
     If not trending we order by creation date
     """
-    threads_per_page = 3
+    threads_per_page = 25
     cur_page = request.args.get('page') or 1
     cur_page = int(cur_page)
     thread_paginator = None

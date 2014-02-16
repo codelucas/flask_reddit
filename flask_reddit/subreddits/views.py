@@ -93,7 +93,7 @@ def permalink(subreddit_name=""):
     if not subreddit:
         abort(404)
 
-    threads_per_page = 3
+    threads_per_page = 25
     cur_page = request.args.get('page') or 1
     cur_page = int(cur_page)
 

@@ -125,6 +125,7 @@ body {
 
 .user-profile-box {
     padding-left: 0px;
+    margin-top: -11px;
 }
 
 .thread-submit-box {
@@ -209,6 +210,24 @@ p.subreddit-desc {
     width: 270px;
     margin-bottom: 21px;
 }
+
+.karma-star {
+    color: #eb6864;
+}
+
+.profile-label {
+    margin: 25px 0 25px 0;
+}
+
+.trophy-room {
+    color: #000;
+    margin-bottom: 20px;
+}
+
+span.red {
+    color: #eb6864;
+}
+
 /*
  * Google style login form
  */

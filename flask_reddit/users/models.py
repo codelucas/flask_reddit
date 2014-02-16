@@ -3,6 +3,7 @@
 """
 from flask_reddit import db
 from flask_reddit.users import constants as USER
+from flask_reddit.threads.models import thread_upvotes, comment_upvotes
 
 class User(db.Model):
     """
@@ -40,3 +41,30 @@ class User(db.Model):
         analogous to above but for roles
         """
         return USER.ROLE[self.role]
+
+    def get_thread_karma(self):
+        """
+        fetch the number of votes this user has had on his/her threads
+        """
+        thread_ids = [t.id for t in self.threads]
+        select = thread_upvotes.select(db.and_(
+                thread_upvotes.c.user_id.in_(thread_ids),
+                thread_upvotes.c.user_id != self.id
+            )
+        )
+        rs = db.engine.execute(select)
+        return rs.rowcount
+
+    def get_comment_karma(self):
+        """
+        fetch the number of votes this user has had on his/her comments
+        """
+        comment_ids = [c.id for c in self.comments]
+        select = comment_upvotes.select(db.and_(
+                comment_upvotes.c.user_id.in_(comment_ids),
+                comment_upvotes.c.user_id != self.id
+            )
+        )
+        rs = db.engine.execute(select)
+        return rs.rowcount
+
