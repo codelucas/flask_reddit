@@ -50,7 +50,8 @@ def submit():
         title = form.title.data.strip()
         link = form.link.data.strip()
         text = form.text.data.strip()
-        thread = Thread(title=title, link=link, text=text, user_id=user_id)
+        thread = Thread(title=title, link=link, text=text,
+                user_id=user_id, subreddit_id=1)
 
         if not meets_thread_criterea(thread):
             return render_template('threads/submit.html', form=form, user=g.user)

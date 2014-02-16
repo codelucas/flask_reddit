@@ -3,6 +3,7 @@
 """
 from flask import (Blueprint, request, render_template, flash, g,
         session, redirect, url_for, abort)
+from flask_reddit.frontends.views import get_subreddits
 from flask_reddit.subreddits.forms import SubmitForm
 from flask_reddit.subreddits.models import Subreddit
 from flask_reddit.users.models import User
@@ -58,8 +59,8 @@ def submit():
         db.session.commit()
 
         flash('Thanks for starting a great community!')
-        return redirect(url_for('/r/%s/' % subreddit.name))
-    return render_template('/subreddits/submit.html', form=form, user=g.user)
+        return redirect(url_for('subreddits.permalink', subreddit_name=subreddit.name))
+    return render_template('subreddits/submit.html', form=form, user=g.user)
 
 @mod.route('/delete/', methods=['GET', 'POST'])
 def delete():
@@ -74,13 +75,13 @@ def edit():
     pass
 
 @mod.route('/<subreddit_name>/', methods=['GET', 'POST'])
-def subreddit_permalink(subreddit_name=""):
+def permalink(subreddit_name=""):
     """
     """
     subreddit = Subreddit.query.filter_by(name=subreddit_name).first()
     if not subreddit:
         abort(404)
-
-    return render_template('subreddits/permalink.html', user=g.user,
-            subreddit=subreddit)
+    threads = subreddit.threads
+    subreddits = get_subreddits()
+    return redirect(url_for('frontends.home'))
 

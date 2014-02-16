@@ -8,9 +8,19 @@ from flask_reddit import db
 from flask_reddit.users.forms import RegisterForm, LoginForm
 from flask_reddit.users.models import User
 from flask_reddit.threads.models import Thread
+from flask_reddit.subreddits.models import Subreddit
 from flask_reddit.users.decorators import requires_login
 
+
 mod = Blueprint('frontends', __name__, url_prefix='')
+
+def get_subreddits():
+    """
+    important and widely imported method because a list of
+    the top 30 subreddits are present on every page in the sidebar
+    """
+    subreddits = Subreddit.query.filter(id != 1)[:25]
+    return subreddits
 
 @mod.route('/')
 @mod.route('/<regex("trending"):trending>/')
@@ -22,7 +32,11 @@ def home(trending=False):
         threads = Thread.query.all() # TODO
     else:
         threads = Thread.query.order_by(db.desc(Thread.created_on)).all()
-    return render_template('home.html', user=g.user, threads=threads)
+
+    subreddits = get_subreddits()
+
+    return render_template('home.html', user=g.user,
+            threads=threads, subreddits=subreddits)
 
 @mod.before_request
 def before_request():

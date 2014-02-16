@@ -3,7 +3,6 @@
 """
 from flask_reddit import db
 from flask_reddit.users import constants as USER
-from flask_reddit.threads.models import Thread
 
 class User(db.Model):
     """
@@ -17,9 +16,7 @@ class User(db.Model):
 
     threads = db.relationship('Thread', backref='user', lazy='dynamic')
     comments = db.relationship('Comment', backref='user', lazy='dynamic')
-
-    # upvotes = db.Column()
-    # downvotes = db.Column()
+    subreddits = db.relationship('Subreddit', backref='user', lazy='dynamic')
 
     status = db.Column(db.SmallInteger, default=USER.ALIVE)
     role = db.Column(db.SmallInteger, default=USER.USER)

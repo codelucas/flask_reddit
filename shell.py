@@ -11,5 +11,6 @@ from flask_reddit import *
 
 from flask_reddit.users.models import *
 from flask_reddit.threads.models import *
+from flask_reddit.subreddits.models import *
 
 os.environ['PYTHONINSPECT'] = 'True'

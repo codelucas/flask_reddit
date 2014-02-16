@@ -59,13 +59,14 @@
                 Submit a post</button></a>
         </div>
         <div class="row">
-        <a href="/subreddits/submit/"><button type="button" class="btn btn-primary 
+        <a href="/r/subreddits/submit/"><button type="button" class="btn btn-primary 
             inverse-white-button add-subreddit-button">Create Community +</button></a>
     </div>
 
     <ul id="subreddit-list">
-        <li><a href="/r/funny">funny</a></li>
-        <li><a href="/r/news">news</a></li>
+        {% for subreddit in subreddits %}
+        <li><a href="/r/{{ subreddit.name }}">{{ subreddit.name }}</a></li>
+        {% endfor %}
     </ul>
     <a href-"#">view all</a>
   {% endblock %}

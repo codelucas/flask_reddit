@@ -40,6 +40,9 @@ app.register_blueprint(frontends_module)
 from flask_reddit.apis.views import mod as apis_module
 app.register_blueprint(apis_module)
 
+from flask_reddit.subreddits.views import mod as subreddits_module
+app.register_blueprint(subreddits_module)
+
 def custom_render(template, *args, **kwargs):
     """
     custom template rendering including some flask_reddit vars

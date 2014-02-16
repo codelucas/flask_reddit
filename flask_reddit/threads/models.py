@@ -2,6 +2,24 @@
 """
 All database abstractions for threads and comments
 go in this file.
+
+| thread_upvotes | CREATE TABLE `thread_upvotes` (
+  `user_id` int(11) DEFAULT NULL,
+  `thread_id` int(11) DEFAULT NULL,
+  KEY `user_id` (`user_id`),
+  KEY `thread_id` (`thread_id`),
+  CONSTRAINT `thread_upvotes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users_user` (`id`),
+  CONSTRAINT `thread_upvotes_ibfk_2` FOREIGN KEY (`thread_id`) REFERENCES `threads_thread` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+| comment_upvotes | CREATE TABLE `comment_upvotes` (
+  `user_id` int(11) DEFAULT NULL,
+  `comment_id` int(11) DEFAULT NULL,
+  KEY `user_id` (`user_id`),
+  KEY `comment_id` (`comment_id`),
+  CONSTRAINT `comment_upvotes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users_user` (`id`),
+  CONSTRAINT `comment_upvotes_ibfk_2` FOREIGN KEY (`comment_id`) REFERENCES `threads_comment` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
 """
 from flask_reddit import db
 from flask_reddit.threads import constants as THREAD
@@ -31,6 +49,7 @@ class Thread(db.Model):
     thumbnail = db.Column(db.String(THREAD.MAX_LINK), default=None)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users_user.id'))
+    subreddit_id = db.Column(db.Integer, db.ForeignKey('subreddits_subreddit.id'))
 
     created_on = db.Column(db.DateTime, default=db.func.now())
     updated_on = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
@@ -40,11 +59,12 @@ class Thread(db.Model):
 
     votes = db.Column(db.Integer, default=1)
 
-    def __init__(self, title, text, link, user_id):
+    def __init__(self, title, text, link, user_id, subreddit_id):
         self.title = title
         self.text = text
         self.link = link
         self.user_id = user_id
+        self.subreddit_id = subreddit_id
 
     def __repr__(self):
         return '<Thread %r>' % (self.title)
@@ -215,9 +235,11 @@ class Comment(db.Model):
         default order by timestamp
         """
         if order_by == 'timestamp':
-            return self.children.order_by(db.desc(Comment.created_on)).all()[:THREAD.MAX_COMMENTS]
+            return self.children.order_by(db.desc(Comment.created_on)).\
+                all()[:THREAD.MAX_COMMENTS]
         else:
-            return self.comments.order_by(db.desc(Comment.created_on)).all()[:THREAD.MAX_COMMENTS]
+            return self.comments.order_by(db.desc(Comment.created_on)).\
+                all()[:THREAD.MAX_COMMENTS]
 
     def get_margin_left(self):
         """

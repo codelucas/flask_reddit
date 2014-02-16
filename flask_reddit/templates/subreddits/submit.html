@@ -1,0 +1,19 @@
+{% extends "home.html" %}
+
+{% block left %}
+  <div class="">
+  <h2 class="thread-submit-title">Communities join the world together.</h2>
+  <br>
+  <div class="col-lg-10 thread-submit-box">
+  {% from "macros.html" import render_field %}
+  <form method="POST" action="." class="form bs-example form-horizontal">
+    {{ form.csrf_token }}
+    {{ render_field(form.name, class="form-control", placeholder="name", autofocus="") }}
+    <br>
+    {{ render_field(form.desc, class="form-control", placeholder="description") }}
+    <br>
+    <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
+  </form>
+  </div>
+  </div> 
+{% endblock %}
