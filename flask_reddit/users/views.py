@@ -6,6 +6,7 @@ from flask import (Blueprint, request, render_template, flash, g, session,
 
 from flask_reddit import db
 from flask_reddit.users.models import User
+from flask_reddit.frontends.views import get_subreddits
 from flask_reddit.users.decorators import requires_login
 
 mod = Blueprint('users', __name__, url_prefix='/users')
@@ -23,5 +24,6 @@ def home_page(username=None):
     user = User.query.filter_by(username=username).first()
     if not user:
         abort(404)
-    return render_template('users/profile.html', user=g.user, current_user=user)
+    return render_template('users/profile.html', user=g.user, current_user=user,
+            subreddits = get_subreddits())
 

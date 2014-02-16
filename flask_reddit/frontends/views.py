@@ -14,6 +14,9 @@ from flask_reddit.users.decorators import requires_login
 
 mod = Blueprint('frontends', __name__, url_prefix='')
 
+def home_subreddit():
+    return Subreddit.query.get_or_404(1)
+
 def get_subreddits():
     """
     important and widely imported method because a list of
@@ -36,7 +39,7 @@ def home(trending=False):
     subreddits = get_subreddits()
 
     return render_template('home.html', user=g.user,
-            threads=threads, subreddits=subreddits)
+            threads=threads, subreddits=subreddits, cur_subreddit=home_subreddit())
 
 @mod.before_request
 def before_request():

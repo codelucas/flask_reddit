@@ -5,6 +5,7 @@ from flask import Blueprint, request, render_template, flash, g, session, redire
 from flask_reddit.threads.forms import SubmitForm
 from flask_reddit.threads.models import Thread
 from flask_reddit.users.models import User
+from flask_reddit.subreddits.models import Subreddit
 from flask_reddit import db
 
 mod = Blueprint('threads', __name__, url_prefix='/threads')
@@ -36,8 +37,8 @@ def meets_thread_criterea(thread):
 
     return True
 
-@mod.route('/submit/', methods=['GET', 'POST'])
-def submit():
+@mod.route('/<subreddit_name>/submit/', methods=['GET', 'POST'])
+def submit(subreddit_name=None):
     """
     """
     if g.user is None:
@@ -45,23 +46,29 @@ def submit():
         return redirect(url_for('frontends.login'))
     user_id = g.user.id
 
+    subreddit = Subreddit.query.filter_by(name=subreddit_name).first()
+    if not subreddit:
+        abort(404)
+
     form = SubmitForm(request.form)
     if form.validate_on_submit():
         title = form.title.data.strip()
         link = form.link.data.strip()
         text = form.text.data.strip()
         thread = Thread(title=title, link=link, text=text,
-                user_id=user_id, subreddit_id=1)
+                user_id=user_id, subreddit_id=subreddit.id)
 
         if not meets_thread_criterea(thread):
-            return render_template('threads/submit.html', form=form, user=g.user)
+            return render_template('threads/submit.html', form=form, user=g.user,
+                cur_subreddit=subreddit.name)
 
         db.session.add(thread)
         db.session.commit()
 
         flash('thanks for submitting!')
         return redirect(url_for('frontends.home'))
-    return render_template('threads/submit.html', form=form, user=g.user)
+    return render_template('threads/submit.html', form=form, user=g.user,
+            cur_subreddit=subreddit.name)
 
 @mod.route('/delete/', methods=['GET', 'POST'])
 def delete():
@@ -75,13 +82,15 @@ def edit():
     """
     pass
 
-@mod.route('/<thread_id>/<path:title>/', methods=['GET', 'POST'])
-def thread_permalink(thread_id=None, title=None):
+@mod.route('/<subreddit_name>/<thread_id>/<path:title>/', methods=['GET', 'POST'])
+def thread_permalink(subreddit_name=None, thread_id=None, title=None):
     """
     """
     thread_id = thread_id or -99
     thread = Thread.query.get_or_404(int(thread_id))
-    return render_template('threads/permalink.html', user=g.user, thread=thread)
+    subreddit = Subreddit.query.filter_by(name=subreddit_name).first()
+    return render_template('threads/permalink.html', user=g.user, thread=thread,
+            cur_subreddit=subreddit)
 
 ##########################
 ##### Comments Views #####

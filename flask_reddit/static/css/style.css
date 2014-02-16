@@ -200,6 +200,10 @@ body {
     text-decoration: italic;
 }
 
+.view-all-subreddits {
+    margin-left: -17px;
+}
+
 /*
  * Google style login form
  */

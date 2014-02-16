@@ -8,12 +8,16 @@
   {% from "macros.html" import render_field %}
   <form method="POST" action="." class="form bs-example form-horizontal">
     {{ form.csrf_token }}
-    {{ render_field(form.name, class="form-control", placeholder="name", autofocus="") }}
+    {{ render_field(form.name, class="form-control", placeholder="name your community", autofocus="") }}
     <br>
-    {{ render_field(form.desc, class="form-control", placeholder="description") }}
+    {{ render_field(form.desc, class="form-control", placeholder="and now describe it") }}
     <br>
     <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
   </form>
   </div>
   </div> 
+{% endblock %}
+
+{% block create_buttons %}
+
 {% endblock %}

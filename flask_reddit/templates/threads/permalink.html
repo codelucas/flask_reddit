@@ -18,9 +18,10 @@
     </div>
     <div class="col-lg-11 listing-text">
         <a href="{{ thread.link }}"><h2 class="listing-title">{{ thread.title }}</h2></a>
-        updated {{ thread.pretty_date('updated') }}, created {{ thread.pretty_date('created') }},
+        created {{ thread.pretty_date('created') }},
         by <a href="{{ url_for('users.home_page', username=thread.user.username) }}">
-            {{ thread.user.username }}.</a>
+            {{ thread.user.username }}.</a> in <a href="{{ url_for('subreddits.permalink', 
+                subreddit_name=thread.subreddit.name) }}">{{ thread.subreddit.name }}</a>
         <br>
         <br>
         <p class="thread-text">{{ thread.text }}</p>

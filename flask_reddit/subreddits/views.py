@@ -38,29 +38,39 @@ def meets_subreddit_criterea(subreddit):
     return True
 
 @mod.route('/subreddits/submit/', methods=['GET', 'POST'])
-def submit():
+def submit(subreddit_name=None):
     """
     """
     if g.user is None:
         flash('You must be logged in to submit subreddits!')
         return redirect(url_for('frontends.login'))
 
-    user_id = g.user.id
     form = SubmitForm(request.form)
+    user_id = g.user.id
+
     if form.validate_on_submit():
         name = form.name.data.strip()
         desc = form.desc.data.strip()
-        subreddit = Subreddit(name=name, desc=desc, admin_id=user_id)
+
+        subreddit = Subreddit.query.filter_by(name=name).first()
+        if subreddit:
+            flash('subreddit already exists!')
+            return render_template('subreddits/submit.html', form=form, user=g.user,
+                subreddits=get_subreddits())
+        new_subreddit = Subreddit(name=name, desc=desc, admin_id=user_id)
 
         if not meets_subreddit_criterea(subreddit):
-            return render_template('subreddits/submit.html', form=form, user=g.user)
+            return render_template('subreddits/submit.html', form=form, user=g.user,
+                subreddits=get_subreddits())
 
-        db.session.add(subreddit)
+        db.session.add(new_subreddit)
         db.session.commit()
 
-        flash('Thanks for starting a great community!')
-        return redirect(url_for('subreddits.permalink', subreddit_name=subreddit.name))
-    return render_template('subreddits/submit.html', form=form, user=g.user)
+        flash('Thanks for starting a community! Begin adding posts to your community
+                by clicking the red button to the right.')
+        return redirect(url_for('subreddits.permalink', subreddit_name=new_subreddit.name))
+    return render_template('subreddits/submit.html', form=form, user=g.user,
+            subreddits=get_subreddits())
 
 @mod.route('/delete/', methods=['GET', 'POST'])
 def delete():
@@ -83,5 +93,6 @@ def permalink(subreddit_name=""):
         abort(404)
     threads = subreddit.threads
     subreddits = get_subreddits()
-    return redirect(url_for('frontends.home'))
+    return render_template('home.html', user=g.user, threads=threads,
+        subreddits=subreddits, cur_subreddit=subreddit)
 

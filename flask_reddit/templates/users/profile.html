@@ -7,8 +7,8 @@
             <div class="row">
                 <div class="col-sm-6 col-md-8">
                     <h4>{{ current_user.username }}</h4>
-                    <p>Threads posted -- {{ user.threads.all()|length() }} | 
-                    Comments posted -- {{ user.comments.all()|length() }} | 
+                    <p>Threads posted -- {{ current_user.threads.all()|length() }} | 
+                    Comments posted -- {{ current_user.comments.all()|length() }} | 
                     Thread Karma -- <br> Comment Karma -- </p>
                     <!--<small><cite title="San Francisco, USA">San Francisco, USA 
                         <i class="glyphicon glyphicon-map-marker">
@@ -20,10 +20,10 @@
 
                     <h3>Recently created threads</h3>
                     <br>
-                    {% for thread in user.threads.all()[-7:]|reverse  %}
+                    {% for thread in current_user.threads.all()[-7:]|reverse  %}
                         <p>
                             <a href="{{ thread.link }}">{{ thread.title }}</a>, posted 
-                            <a href="{{ config.ROOT_URL }}/threads/{{ thread.id }}/{{ thread.title|truncate(100)|replace(' ', '_') }}">
+                            <a href="{{ config.ROOT_URL }}/threads/{{ thread.subreddit.name }}/{{ thread.id }}/{{ thread.title|truncate(100)|replace(' ', '_') }}">
                                 {{ thread.pretty_date() }}</a>
                         </p>
                     {% endfor %}
@@ -31,10 +31,10 @@
 
                     <h3>Recently created comments</h3>
                     <br>
-                    {% for comment in user.comments.all()[-7:]|reverse %}
+                    {% for comment in current_user.comments.all()[-7:]|reverse %}
                         <p>
                         <i>{{ comment.text }}</i>, posted 
-                            <a href="{{ config.ROOT_URL }}/threads/{{ comment.thread.id }}/{{ comment.thread.title|truncate(100)|replace(' ', '_') }}">{{ comment.pretty_date() }}</a>
+                        <a href="{{ config.ROOT_URL }}/threads/{{ comment.thread.subreddit.name }}/{{ comment.thread.id }}/{{ comment.thread.title|truncate(100)|replace(' ', '_') }}">{{ comment.pretty_date() }}</a>
                         </p>
                     {% endfor %}
                         <p>see more ...</p>
@@ -44,4 +44,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block create_buttons %}
+
 {% endblock %}
