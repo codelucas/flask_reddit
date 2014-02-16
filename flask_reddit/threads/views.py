@@ -6,6 +6,7 @@ from flask_reddit.threads.forms import SubmitForm
 from flask_reddit.threads.models import Thread
 from flask_reddit.users.models import User
 from flask_reddit.subreddits.models import Subreddit
+from flask_reddit.frontends.views import get_subreddits
 from flask_reddit import db
 
 mod = Blueprint('threads', __name__, url_prefix='/threads')
@@ -68,7 +69,7 @@ def submit(subreddit_name=None):
         flash('thanks for submitting!')
         return redirect(url_for('frontends.home'))
     return render_template('threads/submit.html', form=form, user=g.user,
-            cur_subreddit=subreddit.name)
+            cur_subreddit=subreddit, subreddits=get_subreddits())
 
 @mod.route('/delete/', methods=['GET', 'POST'])
 def delete():

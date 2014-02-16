@@ -66,7 +66,7 @@ def submit(subreddit_name=None):
         db.session.add(new_subreddit)
         db.session.commit()
 
-        flash('Thanks for starting a community! Begin adding posts to your community
+        flash('Thanks for starting a community! Begin adding posts to your community\
                 by clicking the red button to the right.')
         return redirect(url_for('subreddits.permalink', subreddit_name=new_subreddit.name))
     return render_template('subreddits/submit.html', form=form, user=g.user,

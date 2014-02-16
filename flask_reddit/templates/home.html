@@ -23,13 +23,13 @@
               {% if thread.link %}
               <a href="{{ thread.link }}" class="listing-title">
               {% else %}
-              <a href="{{ config.ROOT_URL }}/threads/{{ cur_subreddit.name }}/{{ thread.id }}/{{ thread.title|truncate(100)|replace(' ', '_') }}" class="listing-title">
+              <a href="{{ config.ROOT_URL }}/threads/{{ thread.subreddit.name }}/{{ thread.id }}/{{ thread.title|truncate(100)|replace(' ', '_') }}" class="listing-title">
               {% endif %}
                 <h4>{{ thread.title }}</h4>
               </a>
 
               <div class="post-listing-meta">
-                  <a href="{{ config.ROOT_URL }}/threads/{{ cur_subreddit.name }}/{{ thread.id }}/{{ thread.title|truncate(100)|replace(' ', '_') }}">
+                  <a href="{{ config.ROOT_URL }}/threads/{{ thread.subreddit.name }}/{{ thread.id }}/{{ thread.title|truncate(100)|replace(' ', '_') }}">
                   {{ thread.comments.all()|length() }} comments</a>,
                   {{ thread.pretty_date() }}, by 
                   <a href="{{ url_for('users.home_page', 
@@ -66,6 +66,13 @@
             <a href="/r/subreddits/submit/"><button type="button" class="btn btn-primary 
             inverse-white-button add-subreddit-button">Create Community +</button></a>
     </div>
+
+    {% if cur_subreddit.name != 'home' %}
+    <p class="subreddit-desc">
+        {{ cur_subreddit.desc }}
+    </p>
+    {% endif %}
+
     {% endblock %}
 
     <ul id="subreddit-list">

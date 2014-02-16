@@ -204,6 +204,11 @@ body {
     margin-left: -17px;
 }
 
+p.subreddit-desc {
+    margin-left: -17px;
+    width: 270px;
+    margin-bottom: 21px;
+}
 /*
  * Google style login form
  */

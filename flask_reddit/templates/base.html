@@ -35,7 +35,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">{{ config.BRAND }}</a>
+          <a class="navbar-brand" href="/">
+              {% if cur_subreddit is defined and cur_subreddit.name != 'home' %}
+                  {{ cur_subreddit.name }}
+              {% else %} 
+                  {{ config.BRAND }}
+              {% endif %}
+          </a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->

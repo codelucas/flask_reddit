@@ -6,7 +6,7 @@
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-9 user-profile-box">
             <div class="row">
                 <div class="col-sm-6 col-md-8">
-                    <h4>{{ current_user.username }}</h4>
+                    <h4>User: {{ current_user.username }}</h4>
                     <p>Threads posted -- {{ current_user.threads.all()|length() }} | 
                     Comments posted -- {{ current_user.comments.all()|length() }} | 
                     Thread Karma -- <br> Comment Karma -- </p>
