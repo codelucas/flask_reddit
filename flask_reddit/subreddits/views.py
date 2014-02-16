@@ -6,6 +6,7 @@ from flask import (Blueprint, request, render_template, flash, g,
 from flask_reddit.frontends.views import get_subreddits
 from flask_reddit.subreddits.forms import SubmitForm
 from flask_reddit.subreddits.models import Subreddit
+from flask_reddit.threads.models import Thread
 from flask_reddit.users.models import User
 from flask_reddit import db
 
@@ -91,8 +92,17 @@ def permalink(subreddit_name=""):
     subreddit = Subreddit.query.filter_by(name=subreddit_name).first()
     if not subreddit:
         abort(404)
-    threads = subreddit.threads
+
+    threads_per_page = 3
+    cur_page = request.args.get('page') or 1
+    cur_page = int(cur_page)
+
+    # threads = subreddit.threads
+    thread_paginator = subreddit.threads.order_by(db.desc(Thread.created_on)).\
+            paginate(cur_page, per_page=threads_per_page, error_out=True)
+
     subreddits = get_subreddits()
-    return render_template('home.html', user=g.user, threads=threads,
+
+    return render_template('home.html', user=g.user, thread_paginator=thread_paginator,
         subreddits=subreddits, cur_subreddit=subreddit)
 

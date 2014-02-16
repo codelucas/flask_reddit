@@ -31,15 +31,23 @@ def home(trending=False):
     """
     If not trending we order by creation date
     """
+    threads_per_page = 3
+    cur_page = request.args.get('page') or 1
+    cur_page = int(cur_page)
+    thread_paginator = None
+
     if trending:
-        threads = Thread.query.all() # TODO
+        thread_paginator = Thread.query.paginate(cur_page,
+                per_page=threads_per_page, error_out=True)
     else:
-        threads = Thread.query.order_by(db.desc(Thread.created_on)).all()
+        thread_paginator = Thread.query.order_by(db.desc(Thread.created_on)).\
+                paginate(cur_page, per_page=threads_per_page, error_out=True)
 
     subreddits = get_subreddits()
 
     return render_template('home.html', user=g.user,
-            threads=threads, subreddits=subreddits, cur_subreddit=home_subreddit())
+            subreddits=subreddits, cur_subreddit=home_subreddit(),
+            thread_paginator=thread_paginator)
 
 @mod.before_request
 def before_request():

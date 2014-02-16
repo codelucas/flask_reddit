@@ -3,7 +3,7 @@
 {% block content %}
 <div class="col-lg-9 col-md-9 col-sm-7 col-xs-5 left-bar">
   {% block left %}
-      {% for thread in threads %}
+      {% for thread in thread_paginator.items %}
         <div name="{{ thread.id }}" class="row listing-row">
           <div class="col-lg-1 listing-vote-box">  
               <div class="">
@@ -45,8 +45,16 @@
       {% endfor %}
 
       <ul class="pager pull-left">
-        <li><a href="?page=prev">prev</a></li>
-        <li><a href="?page=next">next</a></li>
+        {% if thread_paginator.has_prev %}
+            <li><a href="?page={{ thread_paginator.prev_num }}">prev</a></li>
+        {% else %}
+            <li style="opacity:0.3;"><a>prev</a></li>
+        {% endif %}
+        {% if thread_paginator.has_next %}
+            <li><a href="?page={{ thread_paginator.next_num }}">next</a></li>
+        {% else %}
+            <li style="opacity:0.3;"><a>next</a></li>
+        {% endif %}
       </ul>
   {% endblock %}
 </div>
