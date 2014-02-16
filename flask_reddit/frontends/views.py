@@ -22,7 +22,7 @@ def get_subreddits():
     important and widely imported method because a list of
     the top 30 subreddits are present on every page in the sidebar
     """
-    subreddits = Subreddit.query.filter(id != 1)[:25]
+    subreddits = Subreddit.query.filter(Subreddit.id != 1)[:25]
     return subreddits
 
 @mod.route('/')

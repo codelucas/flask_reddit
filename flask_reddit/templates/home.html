@@ -68,15 +68,20 @@
     {% endif %}
     {% block create_buttons %}
     <div class="row">
-        <a href="/threads/{{ cur_subreddit.name }}/submit/">
-            <button class="btn btn-primary submit-post-button">Submit a post</button></a>
+        {% if cur_subreddit is defined %}
+            <a href="/threads/{{ cur_subreddit.name }}/submit/">
+                <button class="btn btn-primary submit-post-button">Submit a post</button></a>
+        {% else %}
+            <a href="/threads/home/submit/">
+                <button class="btn btn-primary submit-post-button">Submit a post</button></a>
+        {% endif %} 
         </div>
         <div class="row">
             <a href="/r/subreddits/submit/"><button type="button" class="btn btn-primary 
             inverse-white-button add-subreddit-button">Create Community +</button></a>
     </div>
 
-    {% if cur_subreddit.name != 'home' %}
+    {% if cur_subreddit is defined and cur_subreddit.name != 'home' %}
     <p class="subreddit-desc">
         {{ cur_subreddit.desc }}
     </p>
@@ -89,7 +94,7 @@
         <li><a href="/r/{{ subreddit.name }}">{{ subreddit.name }}</a></li>
         {% endfor %}
     </ul>
-    <a class="view-all-subreddits" href-"#">view all</a>
+    <a class="view-all-subreddits" href="/r/subreddits/view_all/">view all</a>
   {% endblock %}
 </div>
 

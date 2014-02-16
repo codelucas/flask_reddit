@@ -39,7 +39,7 @@ def meets_subreddit_criterea(subreddit):
     return True
 
 @mod.route('/subreddits/submit/', methods=['GET', 'POST'])
-def submit(subreddit_name=None):
+def submit():
     """
     """
     if g.user is None:
@@ -79,13 +79,13 @@ def delete():
     """
     pass
 
-@mod.route('/edit/', methods=['GET', 'POST'])
-def edit():
+@mod.route('/subreddits/view_all/', methods=['GET'])
+def view_all():
     """
     """
-    pass
+    return render_template('subreddits/all.html', subreddits=Subreddit.query.all())
 
-@mod.route('/<subreddit_name>/', methods=['GET', 'POST'])
+@mod.route('/<subreddit_name>/', methods=['GET'])
 def permalink(subreddit_name=""):
     """
     """

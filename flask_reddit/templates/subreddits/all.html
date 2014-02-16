@@ -1,0 +1,13 @@
+{% extends "home.html" %}
+
+{% block left %}
+  <div class="col-lg-10 thread-submit-box">
+  {% for subreddit in subreddits %}
+        <li><a href="/r/{{ subreddit.name}}/">{{ subreddit.name }}</a></li>
+  {% endfor %}
+  </div>
+{% endblock %}
+
+{% block create_buttons %}
+
+{% endblock %}

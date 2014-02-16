@@ -16,6 +16,8 @@ from flask_reddit.users.models import *
 from flask_reddit.threads.models import *
 from flask_reddit.subreddits.models import *
 
+db.create_all()
+
 first_user = User(username='root', email='your_email@gmail.com', \
         password=generate_password_hash('password'))
 
