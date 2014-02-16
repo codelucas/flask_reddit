@@ -5,14 +5,20 @@ from flask import Blueprint, request, render_template, flash, g, session, redire
 from werkzeug import check_password_hash, generate_password_hash
 
 from flask_reddit import db
+from flask_reddit import search as search_module # don't override function name
 from flask_reddit.users.forms import RegisterForm, LoginForm
 from flask_reddit.users.models import User
 from flask_reddit.threads.models import Thread
 from flask_reddit.subreddits.models import Subreddit
 from flask_reddit.users.decorators import requires_login
 
-
 mod = Blueprint('frontends', __name__, url_prefix='')
+
+@mod.before_request
+def before_request():
+    g.user = None
+    if 'user_id' in session:
+        g.user = User.query.get(session['user_id'])
 
 def home_subreddit():
     return Subreddit.query.get_or_404(1)
@@ -25,7 +31,7 @@ def get_subreddits():
     subreddits = Subreddit.query.filter(Subreddit.id != 1)[:25]
     return subreddits
 
-def process_thread_paginator(trending, subreddit=None):
+def process_thread_paginator(trending=False, rs=None, subreddit=None):
     """
     abstracted because many sources pull from a thread listing
     source (subreddit permalink, homepage, etc)
@@ -34,6 +40,13 @@ def process_thread_paginator(trending, subreddit=None):
     cur_page = request.args.get('page') or 1
     cur_page = int(cur_page)
     thread_paginator = None
+
+    # if we are passing in a resultset, that means we are just looking to
+    # quickly paginate some arbitrary data, no sorting
+    if rs:
+        thread_paginator = rs.paginate(cur_page, per_page=threads_per_page,
+            error_out=True)
+        return thread_paginator
 
     # sexy line of code :)
     base_query = subreddit.threads if subreddit else Thread.query
@@ -60,11 +73,22 @@ def home(trending=False):
             subreddits=subreddits, cur_subreddit=home_subreddit(),
             thread_paginator=thread_paginator)
 
-@mod.before_request
-def before_request():
-    g.user = None
-    if 'user_id' in session:
-        g.user = User.query.get(session['user_id'])
+@mod.route('/search/', methods=['GET'])
+def search():
+    """
+    Allows users to search threads and comments
+    """
+    query = request.args.get('query')
+    rs = search_module.search(query, orderby='creation', search_title=True,
+            search_text=True, limit=100)
+    thread_paginator = process_thread_paginator(rs=rs)
+    rs = rs.all()
+    num_searches = len(rs)
+    subreddits = get_subreddits()
+
+    return render_template('home.html', user=g.user,
+            subreddits=subreddits, cur_subreddit=home_subreddit(),
+            thread_paginator=thread_paginator, num_searches=num_searches)
 
 @mod.route('/login/', methods=['GET', 'POST'])
 def login():

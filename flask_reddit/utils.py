@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Utils has nothing to do with models and views.
+Utilities for our views and models.
 """
 import string
 import random

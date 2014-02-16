@@ -3,6 +3,11 @@
 {% block content %}
 <div class="col-lg-9 col-md-9 col-sm-7 col-xs-5 left-bar">
   {% block left %}
+      {% if num_searches is defined %}
+        <h4 class="highlight">We have found {{ num_searches }} search results </h4>
+        <br>
+      {% endif %}
+
       {% for thread in thread_paginator.items %}
         <div name="{{ thread.id }}" class="row listing-row">
           <div class="col-lg-1 listing-vote-box">  
@@ -68,6 +73,13 @@
     {% endif %}
     {% block create_buttons %}
     <div class="row">
+        <form method="GET" action="/search/" class="" role="search">
+            <div class="form-group">
+                <input type="text" name="query" class="reddit-search form-control" 
+                    placeholder="Search reddit!">
+            </div>
+            <!--<button type="submit" class="btn btn-default">Submit</button>-->
+        </form> 
         {% if cur_subreddit is defined %}
             <a href="/threads/{{ cur_subreddit.name }}/submit/">
                 <button class="btn btn-primary submit-post-button">Submit a post</button></a>

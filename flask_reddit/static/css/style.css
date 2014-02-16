@@ -183,6 +183,14 @@ body {
     color: #fff;
 }
 
+.reddit-search {
+    width: 200px;
+}
+
+.highlight {
+    background-color: yellow;
+}
+
 .login-nav-text a {
     color: #000; 
     text-decoration: underline;
