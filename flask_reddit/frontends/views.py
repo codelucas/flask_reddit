@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 """
-from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for
+from flask import (Blueprint, request, render_template, flash,
+    g, session, redirect, url_for)
 from werkzeug import check_password_hash, generate_password_hash
 
 from flask_reddit import db
@@ -94,28 +95,38 @@ def search():
 @mod.route('/login/', methods=['GET', 'POST'])
 def login():
     """
+    We had to do some extra work to route the user back to
+    his or her original place before logging in
     """
     if g.user:
         return redirect(url_for('frontends.home'))
+
+    next = ''
+    if request.method == 'GET':
+        if 'next' in request.args:
+            next = request.args['next']
+
     form = LoginForm(request.form)
     # make sure data is valid, but doesn't validate password is right
     if form.validate_on_submit():
+        # continue where we left off if so
         user = User.query.filter_by(email=form.email.data).first()
         # we use werzeug to validate user's password
         if user and check_password_hash(user.password, form.password.data):
             # the session can't be modified as it's signed,
             # it's a safe place to store the user id
             session['user_id'] = user.id
-            # flash('Welcome %s' % user.username)
+
+            if 'next' in request.form and request.form['next']:
+                return redirect(request.form['next'])
             return redirect(url_for('frontends.home'))
+
         flash('Wrong email or password', 'error-message')
-    return render_template("login.html", form=form)
+    return render_template("login.html", form=form, next=next)
 
 @mod.route('/logout/', methods=['GET', 'POST'])
 @requires_login
 def logout():
-    """
-    """
     session.pop('user_id', None)
     return redirect(url_for('frontends.home'))
 
@@ -123,6 +134,11 @@ def logout():
 def register():
     """
     """
+    next = ''
+    if request.method == 'GET':
+        if 'next' in request.args:
+            next = request.args['next']
+
     form = RegisterForm(request.form)
     if form.validate_on_submit():
         # create an user instance not yet stored in the database
@@ -131,13 +147,13 @@ def register():
         # Insert the record in our database and commit it
         db.session.add(user)
         db.session.commit()
-
         # Log the user in, as he now has an id
         session['user_id'] = user.id
 
-        # flash will display a message to the user
         flash('thanks for signing up!')
-        # redirect user to the 'home' method of the user module.
+        if 'next' in request.form and request.form['next']:
+            return redirect(request.form['next'])
         return redirect(url_for('frontends.home'))
-    return render_template("register.html", form=form)
+
+    return render_template("register.html", form=form, next=next)
 

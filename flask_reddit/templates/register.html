@@ -6,6 +6,7 @@
   {% from "macros.html" import render_field %}
   <form method="POST" action="." class="form bs-example form-horizontal">
     {{ form.csrf_token }}
+    <input type="hidden" name="next" value="{{ next }}" />
     {{ render_field(form.username, class="form-control", placeholder="username", autofocus="") }}
     <br>
     {{ render_field(form.email, class="form-control", placeholder="email") }}

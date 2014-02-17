@@ -45,7 +45,7 @@ def submit(subreddit_name=None):
     """
     if g.user is None:
         flash('You must be logged in to submit posts!')
-        return redirect(url_for('frontends.login'))
+        return redirect(url_for('frontends.login', next=request.path))
     user_id = g.user.id
 
     subreddit = Subreddit.query.filter_by(name=subreddit_name).first()

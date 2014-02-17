@@ -44,7 +44,7 @@ def submit():
     """
     if g.user is None:
         flash('You must be logged in to submit subreddits!')
-        return redirect(url_for('frontends.login'))
+        return redirect(url_for('frontends.login', next=request.path))
 
     form = SubmitForm(request.form)
     user_id = g.user.id

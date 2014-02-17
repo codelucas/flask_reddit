@@ -10,6 +10,7 @@
                 {% from "macros.html" import render_field %}
                 <form method="POST" action="." class="form-signin">
                 {{ form.csrf_token }}
+                <input type="hidden" name="next" value="{{ next }}"/>
                 {{ render_field(form.email, class="form-control", 
                     placeholder="Email", autofocus="") }}
                 {{ render_field(form.password, class="form-control", placeholder="Password") }}

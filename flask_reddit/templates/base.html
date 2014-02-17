@@ -55,8 +55,8 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
           {% if user is not defined or user == None %}
-              <li><a href="{{ config.ROOT_URL }}/register">Register</a></li>
-              <li><a href="{{ config.ROOT_URL }}/login">Login</a></li>
+              <li><a href="{{ url_for('frontends.register', next=request.path) }}">Register</a></li>
+              <li><a href="{{ url_for('frontends.login', next=request.path) }}">Login</a></li>
           {% else %}
               <p class="navbar-text login-nav-text">logged in as 
                   <a href="{{ url_for('users.home_page', username=user.username) }}">

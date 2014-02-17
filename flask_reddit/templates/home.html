@@ -84,17 +84,18 @@
             <!--<button type="submit" class="btn btn-default">Submit</button>-->
         </form> 
         {% if cur_subreddit is defined %}
-            <a href="/threads/{{ cur_subreddit.name }}/submit/">
+            <a href="{{ url_for('threads.submit', subreddit_name=cur_subreddit.name) }}">
                 <button class="btn btn-primary submit-post-button">
                     submit to {{ cur_subreddit.name }}</button>
             </a>
         {% else %}
-            <a href="/threads/frontpage/submit/">
+            <a href="{{ url_for('threads.submit', subreddit_name='frontpage') }}">
                 <button class="btn btn-primary submit-post-button">submit post</button></a>
         {% endif %} 
         </div>
         <div class="row">
-            <a href="/r/subreddits/submit/"><button type="button" class="btn btn-primary 
+            <a href="{{ url_for('subreddits.submit') }}">
+                <button type="button" class="btn btn-primary 
             inverse-white-button add-subreddit-button">create community +</button></a>
     </div>
 
@@ -112,7 +113,7 @@
         <li><a href="/r/{{ subreddit.name }}">{{ subreddit.name }}</a></li>
         {% endfor %}
     </ul>
-    <a class="align-right-col" href="/r/subreddits/view_all/">view all</a>
+    <a class="align-right-col" href="{{ url_for('subreddits.view_all') }}">view all</a>
     <div class="align-right-col byline-lucas">By: <a href="http://codelucas.com">Lucas</a>,
         <!--<div class="align-right-col github-fork-text">--><a href="https://github.com/codelucas/flask_reddit">
             fork me on Github</a></div>
