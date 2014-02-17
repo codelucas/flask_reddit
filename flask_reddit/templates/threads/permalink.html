@@ -16,7 +16,10 @@
             {{ thread.votes }}
         </div>
     </div>
-    <div class="col-lg-11 listing-text">
+    <div class="col-lg-1 listing-thumbnail-box">
+        <img class="permalink-listing-image" src="{{ thread.thumbnail }}"/>
+    </div>
+    <div class="col-lg-9 listing-text">
         <a href="{{ thread.link }}"><h2 class="listing-title">{{ thread.title }}</h2></a>
         created {{ thread.pretty_date('created') }},
         by <a href="{{ url_for('users.home_page', username=thread.user.username) }}">

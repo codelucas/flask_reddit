@@ -12,7 +12,11 @@ body {
 }
 
 .listing-row {
-    margin-bottom: 18px;
+    margin-bottom: 22px;
+}
+
+div.spacer {
+    margin-top: 10px;
 }
 
 .listing-title-text {
@@ -26,6 +30,7 @@ body {
 
 .listing-text {
     margin-top: -12px;
+    margin-left: 18px;
 }
 
 .listing-vote-box {
@@ -213,6 +218,20 @@ a.brand-nav:hover, a.brand-nav:focus {
 
 .flash-banner {
     margin-top: 12px;
+}
+
+img.permalink-listing-image {
+    width: 70px;
+    height: 70px;
+    margin-left: 5px;
+    margin-top: 0;
+}
+
+img.listing-image {
+    width: 70px;
+    height: 70px;
+    margin-left: 5px;
+    margin-top: -14px;
 }
 
 .highlight {

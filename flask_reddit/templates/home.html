@@ -7,7 +7,7 @@
         <h4 class="highlight">We have found {{ num_searches }} search results </h4>
         <br>
       {% endif %}
-
+      <div class="spacer"></div>
       {% for thread in thread_paginator.items %}
         <div name="{{ thread.id }}" class="row listing-row">
           <div class="col-lg-1 listing-vote-box">  
@@ -24,7 +24,10 @@
                   {{ thread.votes }}
               </div>
           </div>
-          <div class="col-lg-9 listing-text">  
+          <div class="col-lg-1 listing-thumbnail-box">
+              <img class="listing-image" src="{{ thread.thumbnail }}"/>
+          </div>
+          <div class="col-lg-8 listing-text">  
               {% if thread.link %}
               <a href="{{ thread.link }}" class="listing-title">
               {% else %}
