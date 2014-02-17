@@ -211,6 +211,10 @@ a.brand-nav:hover, a.brand-nav:focus {
     background-color: #eeeeee !important;
 }
 
+.flash-banner {
+    margin-top: 12px;
+}
+
 .highlight {
     background-color: yellow;
 }

@@ -121,7 +121,7 @@ def login():
                 return redirect(request.form['next'])
             return redirect(url_for('frontends.home'))
 
-        flash('Wrong email or password', 'error-message')
+        flash('Wrong email or password', 'danger')
     return render_template("login.html", form=form, next=next)
 
 @mod.route('/logout/', methods=['GET', 'POST'])
@@ -150,7 +150,7 @@ def register():
         # Log the user in, as he now has an id
         session['user_id'] = user.id
 
-        flash('thanks for signing up!')
+        flash('thanks for signing up!', 'success')
         if 'next' in request.form and request.form['next']:
             return redirect(request.form['next'])
         return redirect(url_for('frontends.home'))

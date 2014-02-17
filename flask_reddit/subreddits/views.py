@@ -23,19 +23,6 @@ def before_request():
         g.user = User.query.get(session['user_id'])
 
 def meets_subreddit_criterea(subreddit):
-    """
-    if not thread.title:
-        flash('You must include a title!')
-        return False
-    if not thread.text and not thread.link:
-        flash('You must post either body text or a link!')
-        return False
-
-    dup_link = Thread.query.filter_by(link=thread.link).first()
-    if not thread.text and dup_link:
-        flash('someone has already posted the same link as you!')
-        return False
-    """
     return True
 
 @mod.route('/subreddits/submit/', methods=['GET', 'POST'])
@@ -43,7 +30,7 @@ def submit():
     """
     """
     if g.user is None:
-        flash('You must be logged in to submit subreddits!')
+        flash('You must be logged in to submit subreddits!', 'danger')
         return redirect(url_for('frontends.login', next=request.path))
 
     form = SubmitForm(request.form)
@@ -55,7 +42,7 @@ def submit():
 
         subreddit = Subreddit.query.filter_by(name=name).first()
         if subreddit:
-            flash('subreddit already exists!')
+            flash('subreddit already exists!', 'danger')
             return render_template('subreddits/submit.html', form=form, user=g.user,
                 subreddits=get_subreddits())
         new_subreddit = Subreddit(name=name, desc=desc, admin_id=user_id)
@@ -68,7 +55,7 @@ def submit():
         db.session.commit()
 
         flash('Thanks for starting a community! Begin adding posts to your community\
-                by clicking the red button to the right.')
+                by clicking the red button to the right.', 'success')
         return redirect(url_for('subreddits.permalink', subreddit_name=new_subreddit.name))
     return render_template('subreddits/submit.html', form=form, user=g.user,
             subreddits=get_subreddits())
@@ -83,7 +70,8 @@ def delete():
 def view_all():
     """
     """
-    return render_template('subreddits/all.html', user=g.user, subreddits=Subreddit.query.all())
+    return render_template('subreddits/all.html', user=g.user,
+            subreddits=Subreddit.query.all())
 
 @mod.route('/<subreddit_name>/', methods=['GET'])
 def permalink(subreddit_name=""):

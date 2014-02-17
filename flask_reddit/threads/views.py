@@ -26,15 +26,15 @@ def meets_thread_criterea(thread):
     """
     """
     if not thread.title:
-        flash('You must include a title!')
+        flash('You must include a title!', 'danger')
         return False
     if not thread.text and not thread.link:
-        flash('You must post either body text or a link!')
+        flash('You must post either body text or a link!', 'danger')
         return False
 
     dup_link = Thread.query.filter_by(link=thread.link).first()
     if not thread.text and dup_link:
-        flash('someone has already posted the same link as you!')
+        flash('someone has already posted the same link as you!', 'danger')
         return False
 
     return True
@@ -44,7 +44,7 @@ def submit(subreddit_name=None):
     """
     """
     if g.user is None:
-        flash('You must be logged in to submit posts!')
+        flash('You must be logged in to submit posts!', 'danger')
         return redirect(url_for('frontends.login', next=request.path))
     user_id = g.user.id
 
@@ -67,7 +67,7 @@ def submit(subreddit_name=None):
         db.session.add(thread)
         db.session.commit()
 
-        flash('thanks for submitting!')
+        flash('thanks for submitting!', 'success')
         return redirect(url_for('subreddits.permalink', subreddit_name=subreddit.name))
     return render_template('threads/submit.html', form=form, user=g.user,
             cur_subreddit=subreddit, subreddits=get_subreddits())
