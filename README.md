@@ -89,8 +89,8 @@ to the homepage to gunicorn.**
 For a full list of details, view our configs at `server/nginx.conf` and 
 `server/gunicorn_config.py`.
 
-*Note, for this build to work there are paths that you must change in the wsgi.py file, 
-the server configs located in server/\* and the run_gunicorn.sh file.*
+*Note, for this build to work there are paths that you must change in the `wsgi.py` file, 
+the server configs located in `server` directory and the `run_gunicorn.sh` file.*
 
 *Refer to the flask project configuration options to understand what to put in your own
 config.py file.*

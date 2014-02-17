@@ -5,7 +5,7 @@ links go in this file.
 """
 import BeautifulSoup
 import requests
-import urlparse
+from urlparse import urlparse, urlunparse
 
 img_extensions = ['jpg', 'jpeg', 'gif', 'png', 'bmp']
 
@@ -14,6 +14,11 @@ def make_abs(url, img_src):
     scheme = urlparse.urlparse(url).scheme
     baseurl = scheme + '://' + domain
     return urlparse.urljoin(baseurl, img_src)
+
+def clean_url(url):
+    frag = urlparse(url)
+    frag = frag._replace(query='', fragment='')
+    return urlunparse(frag)
 
 def get_top_img(url, timeout=4):
     """
@@ -26,10 +31,11 @@ def get_top_img(url, timeout=4):
     if not url:
         return None
 
+    url = clean_url(url)
+
     # if the url is referencing an img itself, return it
     if url.split('.')[-1].lower() in img_extensions:
         return url
-
     try:
         html = requests.get(url, timeout=timeout).text
         soup = BeautifulSoup.BeautifulSoup(html)
