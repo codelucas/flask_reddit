@@ -32,13 +32,43 @@ Features
 - ajax form posting
 - user profiles
 
-This build is missing one file. A `config.py` file in the currect directory. This
-file contains application sensetive information but can be easily replicated for 
-personal use.
+Build Instructions
+------------------
+
+- First, create a virtualenv on your server and clone this repository:
+`virtualenv reddit-env`
+`cd reddit-env; source bin/activate;`
+`git clone https://github.com/codelucas/flask_reddit.git`
+
+- Set up an instance of MySQL on your server. Note your username and password.
+`sudo aptitude install mysql-server libmysqlclient-dev`
+
+- Set up an instance of nginx on your server. (Don't worry more detailed instructions to com)
+`sudo aptitude install nginx`
+
+- Configure your nginx settings located in flask\_reddit/server/nginx.conf
+Add your settings into your global conf file located in `/etc/nginx/nginx.conf`
+Restart nginx to recognize your settings `sudo service nginx restart`
+
+- Due to sensitive configuration information, I have hidden my personal
+`config.py` file in the gitignore. But, I have provided a clean and easy
+to use config template in this repo named `app_config.py`. 
+
+- **Fill out the `app_config.py` file with your own information and then rename it to
+`config.py` so flask recognizes it by using `mv app_config.py config.py`.**
+Please be sure to fill out the mysql db settings similarly to how you set it up! (Username/pass).
+
+- Install all of the required python modules which this server uses.
+`pip install -r requirements.txt`
+
+- Run the kickstarter script to build the first user and subreddits.
+`python2.7 kickstart.py`
+
+- Run the gunicorn server.
+`sudo sh run_gunicorn.sh`
 
 Refer to the flask project configuration options to understand what to put in your own
 config.py file.
 
-This should be finished in 1-2 weeks! Feel free to `watch` or `star` my progress until then.
-
 Do not hesiate to <a href="http://codelucas.com">contact</a> me <Lucas Ou-Yang> for help or concerns.
+

@@ -6,4 +6,5 @@ MarkupSafe==0.18
 MySQL-python==1.2.3
 WTForms==1.0.5
 Werkzeug==0.9.4
-gunicorn
+BeautifulSoup==3.2.1
+gunicorn==18.0
