@@ -24,6 +24,7 @@ go in this file.
 from flask_reddit import db
 from flask_reddit.threads import constants as THREAD
 from flask_reddit import utils
+from flask_reddit import media
 import datetime
 
 thread_upvotes = db.Table('thread_upvotes',
@@ -65,6 +66,7 @@ class Thread(db.Model):
         self.link = link
         self.user_id = user_id
         self.subreddit_id = subreddit_id
+        self.extract_thumbnail()
 
     def __repr__(self):
         return '<Thread %r>' % (self.title)
@@ -179,9 +181,19 @@ class Thread(db.Model):
 
     def extract_thumbnail(self):
         """
-        use reddit algorithm to extract thumbnail from link, grayscale it
+        ideally this type of heavy content fetching should be put on a
+        celery background task manager or at least a crontab.. instead of
+        setting it to run literally as someone posts a thread. but once again,
+        this repo is just a simple example of a reddit-like crud application!
         """
-        pass
+        DEFAULT_THUMBNAIL = 'http://reddit.codelucas.com/static/imgs/reddit-camera.png'
+        if self.link:
+            thumbnail = media.get_top_img(self.link)
+        if not thumbnail:
+            thumbnail = DEFAULT_THUMBNAIL
+        self.thumbnail = thumbnail
+        db.session.commit()
+
 
 class Comment(db.Model):
     """

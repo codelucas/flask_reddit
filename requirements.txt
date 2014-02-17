@@ -8,3 +8,4 @@ WTForms==1.0.5
 Werkzeug==0.9.4
 BeautifulSoup==3.2.1
 gunicorn==18.0
+requests==2.2.1
