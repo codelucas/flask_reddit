@@ -52,9 +52,11 @@ git clone https://github.com/codelucas/flask_reddit.git
 
 `sudo aptitude install nginx`
 
-- Configure your nginx settings located in flask\_reddit/server/nginx.conf
-Add your settings into your global conf file located in `/etc/nginx/nginx.conf`
-Restart nginx to recognize your settings `sudo service nginx restart`
+- Configure your nginx settings located in `flask\_reddit/server/nginx.conf`.
+
+- Add your settings into your global conf file located in `/etc/nginx/nginx.conf`
+
+- Restart nginx to recognize your settings `sudo service nginx restart`
 
 - Due to sensitive configuration information, I have hidden my personal
 `config.py` file in the gitignore. But, I have provided a clean and easy
@@ -77,15 +79,18 @@ username, pass, etc
 
 `sudo sh run_gunicorn.sh`
 
-**Note that we have now deployed two servers: `nginx` and `gunicorn`. nginx is our
-"internet facing" HTTP server on port 80 while gunicorn is our "wsgi server" which 
-is actually serving up our flask python application locally. nginx reads client
-requests and *decides* which requests to foreward to our gunicorn server. For example,
-nginx serves static content like images while forwarding url routes to the homepage 
-to gunicorn.
+**Note that we have now deployed two servers: `nginx` and `gunicorn`. `nginx` is our
+*internet facing* HTTP server on port 80 while `gunicorn` is our *wsgi server* which 
+is serving up our flask python application locally. `nginx` reads client
+requests and *decides* which requests to foreward to our `gunicorn` server. For example,
+`nginx` serves static content like images very well but it forwards url routes 
+to the homepage to gunicorn.**
 
 For a full list of details, view our configs at `server/nginx.conf` and 
 `server/gunicorn_config.py`.
+
+*Note, for this build to work there are paths that you must change in the wsgi.py file, 
+the server configs located in server/\* and the run_gunicorn.sh file.*
 
 *Refer to the flask project configuration options to understand what to put in your own
 config.py file.*
