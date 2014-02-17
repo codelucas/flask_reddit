@@ -36,7 +36,7 @@ def process_thread_paginator(trending=False, rs=None, subreddit=None):
     abstracted because many sources pull from a thread listing
     source (subreddit permalink, homepage, etc)
     """
-    threads_per_page = 25
+    threads_per_page = 15
     cur_page = request.args.get('page') or 1
     cur_page = int(cur_page)
     thread_paginator = None
@@ -81,6 +81,7 @@ def search():
     query = request.args.get('query')
     rs = search_module.search(query, orderby='creation', search_title=True,
             search_text=True, limit=100)
+
     thread_paginator = process_thread_paginator(rs=rs)
     rs = rs.all()
     num_searches = len(rs)

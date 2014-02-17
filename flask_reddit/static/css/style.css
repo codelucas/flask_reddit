@@ -12,7 +12,11 @@ body {
 }
 
 .listing-row {
-    margin-bottom:10px;
+    margin-bottom: 18px;
+}
+
+.listing-title-text {
+    margin-bottom: 5.5px;
 }
 
 .listing-row a {
@@ -185,10 +189,55 @@ body {
 
 .reddit-search {
     width: 200px;
+    margin-bottom: 21px;
+}
+
+.profile-listing {
+    font-size: 17px;
+}
+
+.profile-listing-inline {
+    font-size: 12px;
+}
+
+a.brand-nav {
+    margin-left: -12px;
+    background-color: #eeeeee;
+}
+
+
+a.brand-nav:hover, a.brand-nav:focus {
+    margin-left: -12px;
+    background-color: #eeeeee !important;
 }
 
 .highlight {
     background-color: yellow;
+}
+
+.thread-permalink .listing-title {
+    margin-top: 10px;
+}
+
+.thread-permalink .listing-vote-box {
+    margin-top: 7px;
+}
+
+.byline-lucas {
+    opacity: 0.4;
+    font-size: 12px;
+    margin-top: 80px;
+}
+
+div.github-fork-text {
+    opacity: 0.4;
+    margin-top: 0;
+    font-size: 12px;
+}
+
+.dash-text {
+    margin-top: 0px;
+    width: 200px;
 }
 
 .login-nav-text a {
@@ -206,18 +255,18 @@ body {
 }
 
 #footer-row {
-    font-size: 11px;
+    font-size: 13px;
 }
 
 .profile-comment-div {
     text-decoration: italic;
 }
 
-.view-all-subreddits {
+.align-right-col {
     margin-left: -17px;
 }
 
-p.subreddit-desc {
+.subreddit-desc {
     margin-left: -17px;
     width: 270px;
     margin-bottom: 21px;
@@ -236,7 +285,7 @@ p.subreddit-desc {
     margin-bottom: 20px;
 }
 
-span.red {
+.red {
     color: #eb6864;
 }
 

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 """
-from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for
+from flask import (Blueprint, request, render_template, flash, g, session,
+    redirect, url_for, abort)
 from flask_reddit.threads.forms import SubmitForm
 from flask_reddit.threads.models import Thread
 from flask_reddit.users.models import User
@@ -90,8 +91,9 @@ def thread_permalink(subreddit_name=None, thread_id=None, title=None):
     thread_id = thread_id or -99
     thread = Thread.query.get_or_404(int(thread_id))
     subreddit = Subreddit.query.filter_by(name=subreddit_name).first()
+    subreddits = get_subreddits()
     return render_template('threads/permalink.html', user=g.user, thread=thread,
-            cur_subreddit=subreddit)
+            cur_subreddit=subreddit, subreddits=subreddits)
 
 ##########################
 ##### Comments Views #####

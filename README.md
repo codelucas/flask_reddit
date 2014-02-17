@@ -1,9 +1,10 @@
 flask\_reddit
 =============
 
-*I'm still working on this, but this project should be finished in an expected 1-2 weeks.*
-
 **flask_reddit** is an extendable + minimalist [Reddit](http://reddit.com) clone.
+
+This was built so beginners who want a standard CRUD + reddit-like application
+can quickly get to work.
 
 We utilize: 
 - `flask` as the web framework.
@@ -20,15 +21,16 @@ And thats pretty much it!
 All of the configutations are in this repository. Deployment instructions 
 will be out soon.
 
-Expected Features
------------------
+Features
+--------
 - threaded comments
-- voting
+- up voting
 - subreddits
 - user karma
+- search
 - rate limiting
-- AJAX to smooth user actions
-
+- ajax form posting
+- user profiles
 
 This build is missing one file. A `config.py` file in the currect directory. This
 file contains application sensetive information but can be easily replicated for 
@@ -38,3 +40,5 @@ Refer to the flask project configuration options to understand what to put in yo
 config.py file.
 
 This should be finished in 1-2 weeks! Feel free to `watch` or `star` my progress until then.
+
+Do not hesiate to <a href="http://codelucas.com">contact</a> me <Lucas Ou-Yang> for help or concerns.

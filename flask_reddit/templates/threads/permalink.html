@@ -1,7 +1,7 @@
 {% extends "home.html" %}
 
 {% block left %}
-<div name="{{ thread.id }}" class="row listing-row">
+<div name="{{ thread.id }}" class="row listing-row thread-permalink">
     <div class="col-lg-1 listing-vote-box">
         <div class="">
             {% if user is defined and user != None and thread.has_voted(user.id) %}

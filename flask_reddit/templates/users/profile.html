@@ -8,32 +8,36 @@
                 <div class="col-sm-6 col-md-8">
                     <h4>User: <u>{{ current_user.username }}</u></h4>
                     <p class="trophy-room">
-                    Thread Karma -- <span class="red">{{ current_user.get_thread_karma() }}</span><br>
-                    Threads posted -- <span class="red">{{ current_user.threads.all()|length() }}</span><br> 
-                    Comment Karma -- <span class="red">{{ current_user.get_comment_karma() }}</span><br>
-                    Comments posted -- <span class="red">{{ current_user.comments.all()|length() }}</span><br> 
+                    Threads: <span class="red">{{ current_user.threads.all()|length() }}</span>, 
+                    Comments: <span class="red">{{ current_user.comments.all()|length() }}</span><br> 
                     </p>
                     <i class="glyphicon glyphicon-envelope"></i>&emsp;{{ current_user.email }}
                     <br>
 
-                    <h4 class="profile-label">Recently created threads</h4>
+                    <u><h4 class="profile-label">Recent threads</h4></u>
                     {% for thread in current_user.threads.all()[-7:]|reverse  %}
                         <p>
-                            <a href="{{ thread.link }}">{{ thread.title }}</a>, posted 
+                        <a class="profile-listing" href="{{ thread.link }}">{{ thread.title }}</a>
+                            <br>
+                            <span class="profile-listing-inline"> posted 
                             <a href="{{ config.ROOT_URL }}/threads/{{ thread.subreddit.name }}/{{ thread.id }}/{{ thread.title|truncate(100)|replace(' ', '_') }}">
-                                {{ thread.pretty_date() }}</a>
+                                {{ thread.pretty_date() }}</a> in 
+                            <a href="/r/{{ thread.subreddit.name }}">{{ thread.subreddit.name }}</a>
+                            </span>
                         </p>
                     {% endfor %}
-                        <p>see more ...</p>
+                        <!--<p>see more ...</p>-->
 
-                    <h4 class="profile-label">Recently created comments</h4>
+                    <u><h4 class="profile-label">Recent comments</h4></u>
                     {% for comment in current_user.comments.all()[-7:]|reverse %}
                         <p>
-                        <i>{{ comment.text }}</i>, posted 
+                        <span class="profile-listing">{{ comment.text }}</span> 
+                        <span class="profile-listing-inline">
                         <a href="{{ config.ROOT_URL }}/threads/{{ comment.thread.subreddit.name }}/{{ comment.thread.id }}/{{ comment.thread.title|truncate(100)|replace(' ', '_') }}">{{ comment.pretty_date() }}</a>
                         </p>
+                        </span>
                     {% endfor %}
-                        <p>see more ...</p>
+                        <!--<p>see more ...</p>-->
                     <br>
                  </div>
             </div>
@@ -42,3 +46,8 @@
 </div>
 {% endblock %}
 
+{% block user_dashboard %}
+    <h3 class="dash-text highlight">Thread Karma: <span class="red">{{ current_user.get_thread_karma() }}</span></h3>
+    <h3 class="dash-text highlight">Comment Karma: <span class="red">{{ current_user.get_comment_karma() }}</span></h3>
+    <br>
+{% endblock %}

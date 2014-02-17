@@ -30,7 +30,7 @@
               {% else %}
               <a href="{{ config.ROOT_URL }}/threads/{{ thread.subreddit.name }}/{{ thread.id }}/{{ thread.title|truncate(100)|replace(' ', '_') }}" class="listing-title">
               {% endif %}
-                <h4>{{ thread.title }}</h4>
+                <h4 class="listing-title-text">{{ thread.title }}</h4>
               </a>
 
               <div class="post-listing-meta">
@@ -39,11 +39,12 @@
                   {{ thread.pretty_date() }}, by 
                   <a href="{{ url_for('users.home_page', 
                         username=thread.user.username) }}">
-                        {{ thread.user.username }}</a> in
+                        {{ thread.user.username }}</a> 
+                    in
                     <a href="{{ url_for('subreddits.permalink', 
                         subreddit_name=thread.subreddit.name) }}">
                         {{ thread.subreddit.name }}
-                  </a>
+                    </a>
               </div>
           </div>
         </div>
@@ -67,12 +68,14 @@
 <div class="col-lg-3 right-bar">
   {% block right %}
     {% if user is defined and user != None %}
-
+        <!-- -->
     {% else %}
-        <h4 class="pre-reg-info">Please register or login to post!</h4>
+        <!-- <h4 class="pre-reg-info">Please register or login to post!</h4>-->
     {% endif %}
     {% block create_buttons %}
     <div class="row">
+        {% block user_dashboard %}
+        {% endblock %}
         <form method="GET" action="/search/" class="" role="search">
             <div class="form-group">
                 <input type="text" name="query" class="reddit-search form-control" 
@@ -82,18 +85,20 @@
         </form> 
         {% if cur_subreddit is defined %}
             <a href="/threads/{{ cur_subreddit.name }}/submit/">
-                <button class="btn btn-primary submit-post-button">Submit a post</button></a>
+                <button class="btn btn-primary submit-post-button">
+                    submit to {{ cur_subreddit.name }}</button>
+            </a>
         {% else %}
-            <a href="/threads/home/submit/">
-                <button class="btn btn-primary submit-post-button">Submit a post</button></a>
+            <a href="/threads/frontpage/submit/">
+                <button class="btn btn-primary submit-post-button">submit post</button></a>
         {% endif %} 
         </div>
         <div class="row">
             <a href="/r/subreddits/submit/"><button type="button" class="btn btn-primary 
-            inverse-white-button add-subreddit-button">Create Community +</button></a>
+            inverse-white-button add-subreddit-button">create community +</button></a>
     </div>
 
-    {% if cur_subreddit is defined and cur_subreddit.name != 'home' %}
+    {% if cur_subreddit is defined %}
     <p class="subreddit-desc">
         {{ cur_subreddit.desc }}
     </p>
@@ -101,12 +106,16 @@
 
     {% endblock %}
 
+    <h4 class="subreddit-desc">Subreddits</h4>
     <ul id="subreddit-list">
         {% for subreddit in subreddits %}
         <li><a href="/r/{{ subreddit.name }}">{{ subreddit.name }}</a></li>
         {% endfor %}
     </ul>
-    <a class="view-all-subreddits" href="/r/subreddits/view_all/">view all</a>
+    <a class="align-right-col" href="/r/subreddits/view_all/">view all</a>
+    <div class="align-right-col byline-lucas">By: <a href="http://codelucas.com">Lucas</a>,
+        <!--<div class="align-right-col github-fork-text">--><a href="https://github.com/codelucas/flask_reddit">
+            fork me on Github</a></div>
   {% endblock %}
 </div>
 
