@@ -5,15 +5,15 @@ links go in this file.
 """
 import BeautifulSoup
 import requests
-from urlparse import urlparse, urlunparse
+from urlparse import urlparse, urlunparse, urljoin
 
 img_extensions = ['jpg', 'jpeg', 'gif', 'png', 'bmp']
 
 def make_abs(url, img_src):
-    domain = urlparse.urlparse(url).netloc
-    scheme = urlparse.urlparse(url).scheme
+    domain = urlparse(url).netloc
+    scheme = urlparse(url).scheme
     baseurl = scheme + '://' + domain
-    return urlparse.urljoin(baseurl, img_src)
+    return urljoin(baseurl, img_src)
 
 def clean_url(url):
     frag = urlparse(url)
