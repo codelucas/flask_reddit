@@ -45,10 +45,15 @@ class User(db.Model):
     def get_thread_karma(self):
         """
         fetch the number of votes this user has had on his/her threads
+
+        1.) Get id's of all threads by this user
+
+        2.) See how many of those threads also were upvoted but not by
+        the person him/her self.
         """
         thread_ids = [t.id for t in self.threads]
         select = thread_upvotes.select(db.and_(
-                thread_upvotes.c.user_id.in_(thread_ids),
+                thread_upvotes.c.thread_id.in_(thread_ids),
                 thread_upvotes.c.user_id != self.id
             )
         )
@@ -61,7 +66,7 @@ class User(db.Model):
         """
         comment_ids = [c.id for c in self.comments]
         select = comment_upvotes.select(db.and_(
-                comment_upvotes.c.user_id.in_(comment_ids),
+                comment_upvotes.c.comment_id.in_(comment_ids),
                 comment_upvotes.c.user_id != self.id
             )
         )
