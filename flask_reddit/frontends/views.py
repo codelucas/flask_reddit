@@ -32,15 +32,6 @@ def get_subreddits():
     subreddits = Subreddit.query.filter(Subreddit.id != 1)[:25]
     return subreddits
 
-def set_hotness_all():
-    """
-    TODO: Please put this like on a celery or crontab interval
-    so we are not calling this every homepage view!
-    """
-    threads = Thread.query.all()
-    for t in threads:
-        t.set_hotness()
-
 def process_thread_paginator(trending=False, rs=None, subreddit=None):
     """
     abstracted because many sources pull from a thread listing
@@ -75,7 +66,6 @@ def home(trending=False):
     """
     If not trending we order by creation date
     """
-    set_hotness_all()
     trending = True if request.args.get('trending') else False
     subreddits = get_subreddits()
     thread_paginator = process_thread_paginator(trending)

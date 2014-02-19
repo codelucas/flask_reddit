@@ -35,22 +35,17 @@ Features
 Build Instructions
 ------------------
 
-- First, create a virtualenv on your server and clone this repository:
-
-```bash
-virtualenv reddit-env
-cd reddit-env 
-source bin/activate
-git clone https://github.com/codelucas/flask_reddit.git
-```
-
 - Set up an instance of MySQL on your server. Note your username and password.
 
-`sudo aptitude install mysql-server libmysqlclient-dev`
+```
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install mysql-server libmysqlclient-dev
+```
 
 - Set up an instance of nginx on your server. (Don't worry more detailed instructions to come)
 
-`sudo aptitude install nginx`
+`sudo apt-get nginx`
 
 - Configure your nginx settings located in `flask\_reddit/server/nginx.conf`.
 
@@ -58,24 +53,50 @@ git clone https://github.com/codelucas/flask_reddit.git
 
 - Restart nginx to recognize your settings `sudo service nginx restart`
 
+- Set up supervisord to monitor your project to make sure it never crashes.
+Supervisor is also convenient for simply restarting/starting your project with ease.
+
+`sudo apt-get supervisor`
+
+- When Supervisor is installed you can give it programs to start and watch by creating config 
+files in the `/etc/supervisor/conf.d` directory. I've provided the conf file which we use
+in the root directory of this repo as `supervidor-reddit.conf`. An example supervisor command 
+would be running `supervisorctl restart YOUR_APP_NAME` to restart gunicorn and bring up new changes.
+
+- Install [virtualenv] and set up a project root where ever you want.
+
+```bash
+sudo apt-get install python-virtualenv;
+cd /path/to/project;
+virtualenv reddit-env;
+cd reddit-env;
+source bin/activate; # viola, you are now in an enclosed python workspace.
+```
+
+- Download the repository and  install all of the required python modules 
+which this server uses.
+
+```bash
+git clone https://github.com/codelucas/flask_reddit.git;
+cd flask_reddit;
+pip install -r requirements.txt
+```
+
 - Due to sensitive configuration information, I have hidden my personal
 `config.py` file in the gitignore. But, I have provided a clean and easy
 to use config template in this repo named `app_config.py`. 
 
-- **Fill out the `app_config.py` file with your own information and then rename it to
+- **Fill out the `flask_reddit/app_config.py` file with your own information and then rename it to
 `config.py` so flask recognizes it by using `mv app_config.py config.py`.**
 Please be sure to fill out the mysql db settings similarly to how you set it up!, 
 username, pass, etc
 
-- Install all of the required python modules which this server uses.
-
-`pip install -r requirements.txt`
-
-- Run the kickstarter script to build the first user and subreddits.
+- Run the `kickstart.py` script to build the first user and subreddits.
 
 `python2.7 kickstart.py`
 
-- Run the gunicorn server.
+- Run the gunicorn server. You won't have to do this ever again if `supervisor` is set up
+properly.
 
 `sudo sh run_gunicorn.sh`
 
