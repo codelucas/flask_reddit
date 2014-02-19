@@ -97,6 +97,9 @@ username, pass, etc
 
 `python2.7 kickstart.py`
 
+- flask_reddit has tasks which must **occur on a regular time intervals**. To make this
+happen, we use the `crontab`, which is present on UNIX systems.
+
 - Run the gunicorn server. You won't have to do this ever again if `supervisor` is set up
 properly.
 
