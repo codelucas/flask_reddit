@@ -3,7 +3,7 @@
 All database abstractions for threads and comments
 go in this file.
 
-| thread_upvotes | CREATE TABLE `thread_upvotes` (
+CREATE TABLE `thread_upvotes` (
   `user_id` int(11) DEFAULT NULL,
   `thread_id` int(11) DEFAULT NULL,
   KEY `user_id` (`user_id`),
@@ -12,7 +12,7 @@ go in this file.
   CONSTRAINT `thread_upvotes_ibfk_2` FOREIGN KEY (`thread_id`) REFERENCES `threads_thread` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 
-| comment_upvotes | CREATE TABLE `comment_upvotes` (
+CREATE TABLE `comment_upvotes` (
   `user_id` int(11) DEFAULT NULL,
   `comment_id` int(11) DEFAULT NULL,
   KEY `user_id` (`user_id`),
@@ -25,6 +25,7 @@ from flask_reddit import db
 from flask_reddit.threads import constants as THREAD
 from flask_reddit import utils
 from flask_reddit import media
+from math import log
 import datetime
 
 thread_upvotes = db.Table('thread_upvotes',
@@ -59,6 +60,7 @@ class Thread(db.Model):
     status = db.Column(db.SmallInteger, default=THREAD.ALIVE)
 
     votes = db.Column(db.Integer, default=1)
+    hotness = db.Column(db.Float(15,6), default=0.00)
 
     def __init__(self, title, text, link, user_id, subreddit_id):
         self.title = title
@@ -94,6 +96,21 @@ class Thread(db.Model):
         returns the raw age of this thread in seconds
         """
         return (self.created_on - datetime.datetime(1970, 1, 1)).total_seconds()
+
+    def get_hotness(self):
+        """
+        returns the reddit hotness algorithm (votes/(age^1.5))
+        """
+        order = log(max(abs(self.votes), 1), 10) # Max/abs are not needed in our case
+        seconds = self.get_age() - 1134028003
+        return round(order + seconds / 45000, 6)
+
+    def set_hotness(self):
+        """
+        returns the reddit hotness algorithm (votes/(age^1.5))
+        """
+        self.hotness = self.get_hotness()
+        db.session.commit()
 
     def pretty_date(self, typeof='created'):
         """

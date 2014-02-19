@@ -66,6 +66,7 @@ def submit(subreddit_name=None):
 
         db.session.add(thread)
         db.session.commit()
+        thread.set_hotness()
 
         flash('thanks for submitting!', 'success')
         return redirect(url_for('subreddits.permalink', subreddit_name=subreddit.name))

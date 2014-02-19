@@ -1,0 +1,15 @@
+# This is the crontab for flask reddit.
+# A crontab is a specification for tasks which need to be run on a
+# time interval in UNIX/UNIX like systems. In our case, instead of
+# computing the hotness for every thread upon every viewing of the
+# homepage, we will keep setting hotness values for every thread
+# on some time interval.
+
+# To check your current crontab, run "crontab -l". To edit it,
+# run "crontab -e" and paste in the following lines!
+
+# The following command states: For every 3 minutes, compute the 
+# hotness for every thread and save it into the database. Also, log
+# any possible errors into our logfile for hotness!
+
+*/3 * * * * /home/lucas/www/reddit.codelucas.com/reddit-env/bin/python2.7 /home/lucas/www/reddit.codelucas.com/reddit-env/flask_reddit/scripts/set_hotness_all.py >> /home/lucas/www/reddit.codelucas.com/reddit-env/flask_reddit/logs/set_hotness_all.log 2>&1

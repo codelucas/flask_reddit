@@ -2,6 +2,8 @@
 settings.py
 config.py
 
+/logs/*.log
+
 # C extensions
 *.so
 
