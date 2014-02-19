@@ -100,6 +100,14 @@ username, pass, etc
 - flask_reddit has tasks which must **occur on a regular time intervals**. To make this
 happen, we use the `crontab`, which is present on UNIX systems.
 
+A crontab is a dash which allows you to specify what programs to run and how often.
+I've provided flask_reddit's example crontab in the root directory as `jobs.cron`.
+
+To view your current crontab, run `crontab -l`. To edit your crontab, run `crontab -e`.
+
+Please paste the contents of `jobs.cron` into your crontab by running `crontab -e` and 
+pasting! More directions are present in the `jobs.cron` file.
+
 - Run the gunicorn server. You won't have to do this ever again if `supervisor` is set up
 properly.
 
