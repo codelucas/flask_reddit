@@ -61,7 +61,7 @@ Supervisor is also convenient for simply restarting/starting your project with e
 
 - When Supervisor is installed you can give it programs to start and watch by creating config 
 files in the `/etc/supervisor/conf.d` directory. I've provided the conf file which we use
-in the root directory of this repo as `supervisor_reddit.conf`. An example supervisor command 
+in the root directory of this repo as `supervisor.conf`. An example supervisor command 
 would be running `supervisorctl restart YOUR_APP_NAME` to restart gunicorn and bring up new changes.
 
 - Install [virtualenv](http://www.virtualenv.org/en/latest/virtualenv.html) and set up a project 
