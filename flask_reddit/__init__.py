@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Written by:
-Lucas Ou-Yang -- http://codelucas.com
+Lucas Ou -- http://lucasou.com
 """
 from flask import Flask, render_template, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
