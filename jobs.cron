@@ -12,4 +12,4 @@
 # hotness for every thread and save it into the database. Also, log
 # any possible errors into our logfile for hotness!
 
-*/3 * * * * /home/lucas/www/reddit.codelucas.com/reddit-env/bin/python2.7 /home/lucas/www/reddit.codelucas.com/reddit-env/flask_reddit/scripts/set_hotness_all.py >> /home/lucas/www/reddit.codelucas.com/reddit-env/flask_reddit/logs/set_hotness_all.log 2>&1
+*/3 * * * * /home/lucas/www/reddit.lucasou.com/reddit-env/bin/python2.7 /home/lucas/www/reddit.lucasou.com/reddit-env/flask_reddit/scripts/set_hotness_all.py >> /home/lucas/www/reddit.lucasou.com/reddit-env/flask_reddit/logs/set_hotness_all.log 2>&1

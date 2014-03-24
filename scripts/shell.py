@@ -9,7 +9,7 @@ from pprint import pprint
 
 from flask import *
 
-sys.path.insert(0, '/home/lucas/www/reddit.codelucas.com/reddit-env/flask_reddit')
+sys.path.insert(0, '/home/lucas/www/reddit.lucasou.com/reddit-env/flask_reddit')
 from flask_reddit import *
 from flask_reddit.users.models import *
 from flask_reddit.threads.models import *

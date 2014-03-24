@@ -2,7 +2,7 @@
 """
 """
 import sys
-sys.path.insert(0, '/home/lucas/www/reddit.codelucas.com/reddit-env')
+sys.path.insert(0, '/home/lucas/www/reddit.lucasou.com/reddit-env')
 
 from werkzeug.contrib.fixers import ProxyFix # needed for http server proxies
 from werkzeug.debug import DebuggedApplication
