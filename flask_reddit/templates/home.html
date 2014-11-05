@@ -112,7 +112,7 @@
 
     <h4 class="subreddit-desc">Subreddits</h4>
     <ul id="subreddit-list">
-        {% for subreddit in subreddits %}
+        {% for subreddit in subreddits[:10] %}
         <li><a href="/r/{{ subreddit.name }}">{{ subreddit.name }}</a></li>
         {% endfor %}
     </ul>
