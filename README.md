@@ -129,5 +129,5 @@ the server configs located in `server` directory and the `run_gunicorn.sh` file.
 *Refer to the flask project configuration options to understand what to put in your own
 config.py file.*
 
-Do not hesiate to <a href="http://lucasou.com">contact</a> me <Lucas Ou> for help or concerns.
+Do not hesiate to <a href="http://codelucas.com">contact</a> me <Lucas Ou> for help or concerns.
 
