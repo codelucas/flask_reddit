@@ -46,7 +46,7 @@ sudo apt-get install mysql-server libmysqlclient-dev
 - Set up an instance of nginx on your server. *I've provided the .conf scripts needed for our
 servers in the `/server` directory.*
 
-`sudo apt-get nginx`
+`sudo apt-get install nginx`
 
 - Configure your nginx settings located in `flask_reddit/server/nginx.conf`.
 
@@ -57,7 +57,7 @@ servers in the `/server` directory.*
 - Set up supervisord to monitor your project to make sure it never crashes.
 Supervisor is also convenient for simply restarting/starting your project with ease.
 
-`sudo apt-get supervisor`
+`sudo apt-get install supervisor`
 
 - When Supervisor is installed you can give it programs to start and watch by creating config 
 files in the `/etc/supervisor/conf.d` directory. I've provided the conf file which we use
