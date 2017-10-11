@@ -25,7 +25,7 @@
               </div>
           </div>
           <div class="col-lg-1 listing-thumbnail-box">
-              <img class="listing-image" src="{{ thread.thumbnail }}"/>
+              <img class="listing-image" src="{{ thread.thumbnail|replace("http://", "https://") }}"/>
           </div>
           <div class="col-lg-8 listing-text">  
               {% if thread.link %}
@@ -118,7 +118,7 @@
     </ul>
     <a class="align-right-col" href="{{ url_for('subreddits.view_all') }}">view all</a>
     <i>
-    <div class="align-right-col byline-lucas">Built by: <a href="http://codelucas.com">Lucas Ou-Yang</a>.
+    <div class="align-right-col byline-lucas">Built by: <a href="https://codelucas.com">Lucas Ou-Yang</a>.
         <br>
         <a href="https://github.com/codelucas/flask_reddit">
             View code on Github</a>.</div>

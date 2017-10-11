@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="col-lg-1 listing-thumbnail-box">
-        <img class="permalink-listing-image" src="{{ thread.thumbnail }}"/>
+        <img class="permalink-listing-image" src="{{ thread.thumbnail|replace("http://", "https://") }}"/>
     </div>
     <div class="col-lg-9 listing-text">
         <a href="{{ thread.link }}"><h2 class="listing-title">{{ thread.title }}</h2></a>
