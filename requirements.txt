@@ -1,10 +1,10 @@
 Flask==0.10.1
 Flask-SQLAlchemy==1.0
-Flask-WTF==0.9.4
+Flask-WTF>=0.14.2
 Jinja2==2.7.1
 MarkupSafe==0.18
 MySQL-python==1.2.3
-WTForms==1.0.5
+WTForms>=2.1
 Werkzeug==0.9.4
 BeautifulSoup==3.2.1
 gunicorn==18.0

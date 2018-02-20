@@ -18,11 +18,13 @@ DATABASE_CONNECT_OPTIONS = {}
 CSRF_ENABLED = True
 CSRF_SESSION_KEY = ""
 
-# customize and add the blow if you'd like to use recaptcha
-RECAPTCHA_USE_SSL = False
-RECAPTCHA_PUBLIC_KEY = ''
-RECAPTCHA_PRIVATE_KEY = ''
-RECAPTCHA_OPTIONS = {'theme': 'white'}
+# Customize and add the blow if you'd like to use recaptcha. SSL is enabled
+# by default and this is recaptcha v2: tap "I'm not a robot" checkbox instead
+# of answering a riddle.
+# Please see: https://www.google.com/recaptcha
+RECAPTCHA_DATA_ATTRS = {'theme': 'light'}
+RECAPTCHA_PUBLIC_KEY = 'YOUR KEY HERE'
+RECAPTCHA_PRIVATE_KEY = 'YOUR PRIVATE KEY HERE'
 
 BRAND = "reddit"
 DOMAIN = "YOUR_DOMAIN_HERE"
